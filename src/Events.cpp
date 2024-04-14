@@ -17,7 +17,7 @@ namespace Events
         // Only do stuff when looking at dead actors
         if (dead_guy && dead_guy->IsDead()) {
             auto chance = util->RandomInt(settings->minNumber, settings->maxNumber);
-            logger::debug("random chance number is: {}", std::to_string(chance));
+            logger::debug("random chance number is: {}, but compare value is {}", std::to_string(chance), std::to_string(settings->compareValue));
             /* check for a random number, so
             1) it doesn't happen too often and
             2) it doesn't happen on the same npc twice in a row (technically still
