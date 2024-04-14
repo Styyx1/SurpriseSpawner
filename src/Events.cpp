@@ -20,9 +20,8 @@ namespace Events
             logger::debug("random chance number is: {}, but compare value is {}", std::to_string(chance), std::to_string(settings->compareValue));
             /* check for a random number, so
             1) it doesn't happen too often and
-            2) it doesn't happen on the same npc twice in a row (technically still
-
-             * * possible but unlikely)*/
+            2) it doesn't happen on the same npc twice in a row
+            (technically still possible but unlikely) */
             if (chance == settings->compareValue) {
                 logger::debug("you looked at {} and the random int was {}", event->objectActivated->GetDisplayFullName(), std::to_string(chance));
                 dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
