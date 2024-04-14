@@ -4,9 +4,9 @@ namespace Events
 {
     class LootActivateEvent : public RE::BSTEventSink<RE::TESActivateEvent>
     {
-        LootActivateEvent()                            = default;
-        LootActivateEvent(const LootActivateEvent&)    = delete;
-        LootActivateEvent(LootActivateEvent&&)         = delete;
+        LootActivateEvent()                                    = default;
+        LootActivateEvent(const LootActivateEvent&)            = delete;
+        LootActivateEvent(LootActivateEvent&&)                 = delete;
         LootActivateEvent& operator=(const LootActivateEvent&) = delete;
         LootActivateEvent& operator=(LootActivateEvent&&)      = delete;
 
@@ -29,8 +29,6 @@ namespace Events
             }
         }
 
-        bool wasActivated {false};
-
-        
+        bool wasActivated{ false };
     };
 } // namespace Events

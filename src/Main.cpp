@@ -1,7 +1,7 @@
 #include "Events.h"
 #include "Logging.h"
-#include "Settings.h"
 #include "SKSE/Interfaces.h"
+#include "Settings.h"
 
 void Listener(SKSE::MessagingInterface::Message* message) noexcept
 {
@@ -28,7 +28,6 @@ SKSEPluginLoad(const SKSE::LoadInterface* skse)
         return false;
 
     logger::info("{} has finished loading.", plugin->GetName());
-
 
     return true;
 }

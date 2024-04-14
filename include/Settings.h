@@ -4,13 +4,12 @@ class Settings : public Singleton<Settings>
 {
 public:
     void LoadSettings() noexcept;
-    void        LoadForms();
+    void LoadForms();
 
-    std::string      FileName;
-    std::uint32_t    minNumber;
-    std::uint32_t    maxNumber;
-    std::uint32_t    compareValue;
-
+    std::string   FileName;
+    std::uint32_t minNumber;
+    std::uint32_t maxNumber;
+    std::uint32_t compareValue;
 
     RE::FormID SpawnFormID;
     RE::FormID SpawnExplosionFormID;

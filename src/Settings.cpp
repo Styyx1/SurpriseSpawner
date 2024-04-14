@@ -61,11 +61,11 @@ void Settings::LoadForms()
 
     if (SpawnExplosionFormID)
         SpawnExplosion = skyrim_cast<RE::BGSExplosion*>(dataHandler->LookupForm(SpawnExplosionFormID, FileName));
-                                                                      
+
     // Hardcoded loads
-     /*settings->SpawnExplosion   = dataHandler->LookupForm(RE::FormID(ParseFormID("0x908")), "SurpriseSpawn.esp")->As<RE::BGSExplosion>();
-    settings->SpawnEnemy       = dataHandler->LookupForm(RE::FormID(ParseFormID("0x800")), "SurpriseSpawn.esp")->As<RE::TESNPC>();*/
-    
+    /*settings->SpawnExplosion   = dataHandler->LookupForm(RE::FormID(ParseFormID("0x908")), "SurpriseSpawn.esp")->As<RE::BGSExplosion>();
+    settings->SpawnEnemy       =
+     * dataHandler->LookupForm(RE::FormID(ParseFormID("0x800")), "SurpriseSpawn.esp")->As<RE::TESNPC>();*/
 
     logger::debug("All Forms loaded");
     logger::debug("Explosion is {}", std::to_string(settings->SpawnExplosion->GetFormID()));
@@ -74,7 +74,4 @@ void Settings::LoadForms()
     logger::debug("min number for randomiser is {}", std::to_string(settings->minNumber));
     logger::debug("compare number for randomiser is {}", std::to_string(settings->compareValue));
 
-}// Credits: Colinswrath https://github.com/colinswrath/BladeAndBlunt
-
-
-
+} // Credits: Colinswrath https://github.com/colinswrath/BladeAndBlunt

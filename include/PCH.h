@@ -177,8 +177,6 @@ public:
     }
 };
 
-
-
 namespace stl
 {
     using namespace SKSE::stl;
