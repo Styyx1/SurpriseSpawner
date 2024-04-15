@@ -73,7 +73,7 @@ namespace Events
                         wasActivated = false;
                         logger::debug("set activated to false");
                     });
-                }).detach();                
+                }).detach();
             }
         }
         return RE::BSEventNotifyControl::kContinue;
