@@ -93,7 +93,7 @@ namespace Events
                         float scale = 0.001f;
                         script->SetCommand(fmt::format(FMT_STRING("setscale {}"), scale));
                         script->CompileAndRun(mimic);
-                        script->SetCommand(fmt::format(FMT_STRING("setscale {}"), scale));                        
+                        script->SetCommand(fmt::format(FMT_STRING("setscale {}"), scale));
                         script->CompileAndRun(event->objectActivated->AsReference());
                         mimic->MoveTo(event->objectActivated->AsReference());
                         event->objectActivated->AsReference()->Disable();
