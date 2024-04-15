@@ -25,7 +25,7 @@ namespace Events
             // check for a random number, so
             // it doesn't happen too often and
             // it doesn't happen on the same npc twice in a row
-            //  (technically still possible but unlikely)
+            // technically still possible but unlikely
             // I still haven't figured out how to automatically close the menu
 
             if (chance == settings->compareValue) {
