@@ -13,10 +13,10 @@ void Settings::LoadSettings() noexcept
     std::string spawnExplosionID(ini.GetValue("General", "ExplosionFormID", ""));
     maxNumber    = std::stoi(ini.GetValue("General", "iMaxNumberRand", ""));
     minNumber    = std::stoi(ini.GetValue("General", "iMinNumberRand", ""));
-    compareValue = std::stoi(ini.GetValue("General", "iCompareValue", ""));
-    std::string fileName(ini.GetValue("General", "sModFileName", ""));
+    compareValue = std::stoi(ini.GetValue("General", "iCompareValue", ""));    
     npc_event_active = ini.GetBoolValue("Event Toggles", "bNPCEvent", "");
     draugr_container_event_active = ini.GetBoolValue("Event Toggles", "bDraugrContainerEvent", "");
+    std::string fileName(ini.GetValue("General", "sModFileName", ""));
 
     debug_logging = ini.GetBoolValue("Log", "Debug");
 
