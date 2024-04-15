@@ -21,13 +21,13 @@ namespace Events
         if (dead_guy && dead_guy->IsDead()) {
             auto chance = util->RandomInt(settings->minNumber, settings->maxNumber);
             logger::debug("random chance number is: {}, but compare value is {}", std::to_string(chance), std::to_string(settings->compareValue));
-           
-            //check for a random number, so
-            //it doesn't happen too often and
-            //it doesn't happen on the same npc twice in a row
-            // (technically still possible but unlikely)
-            //I still haven't figured out how to automatically close the menu
-           
+
+            // check for a random number, so
+            // it doesn't happen too often and
+            // it doesn't happen on the same npc twice in a row
+            //  (technically still possible but unlikely)
+            // I still haven't figured out how to automatically close the menu
+
             if (chance == settings->compareValue) {
                 logger::debug("you looked at {} and the random int was {}", event->objectActivated->GetDisplayFullName(), std::to_string(chance));
                 dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
