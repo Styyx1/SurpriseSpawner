@@ -34,13 +34,13 @@ namespace Events
 
     class MenuEvent : public RE::BSTEventSink<RE::MenuOpenCloseEvent>
     {
-        MenuEvent()                                  = default;
-        MenuEvent(const MenuEvent&)                  = delete;
-        MenuEvent(MenuEvent&&)                       = delete;
-        MenuEvent&    operator=(const MenuEvent&)    = delete;
-        MenuEvent& operator=(MenuEvent&&)            = delete;
+        MenuEvent()                            = default;
+        MenuEvent(const MenuEvent&)            = delete;
+        MenuEvent(MenuEvent&&)                 = delete;
+        MenuEvent& operator=(const MenuEvent&) = delete;
+        MenuEvent& operator=(MenuEvent&&)      = delete;
 
-        public:
+    public:
         static MenuEvent* GetSingleton()
         {
             static MenuEvent singleton;
@@ -63,6 +63,5 @@ namespace Events
                 UIMsgQueue->AddMessage(a_menuName, RE::UI_MESSAGE_TYPE::kHide, nullptr);
             }
         }
-        
     };
 } // namespace Events
