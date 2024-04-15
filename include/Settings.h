@@ -23,5 +23,4 @@ public:
 
     inline static bool npc_event_active{ true };
     inline static bool draugr_container_event_active{ true };
-
 };

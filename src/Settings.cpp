@@ -15,6 +15,7 @@ void Settings::LoadSettings() noexcept
     minNumber    = std::stoi(ini.GetValue("General", "iMinNumberRand", ""));
     compareValue = std::stoi(ini.GetValue("General", "iCompareValue", ""));    
     npc_event_active = ini.GetBoolValue("Event Toggles", "bNPCEvent", "");
+    npc_event_active              = ini.GetBoolValue("Event Toggles", "bNPCEvent", "");
     draugr_container_event_active = ini.GetBoolValue("Event Toggles", "bDraugrContainerEvent", "");
     std::string fileName(ini.GetValue("General", "sModFileName", ""));
 
