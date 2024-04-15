@@ -10,7 +10,9 @@ void Listener(SKSE::MessagingInterface::Message* message) noexcept
         settings->LoadSettings();
         settings->LoadForms();
         auto manager = Events::LootActivateEvent::GetSingleton();
-        manager->RegisterEvents();
+        manager->RegisterActivateEvents();
+        auto menuManager = Events::MenuEvent::GetSingleton();
+        menuManager->RegisterMenuEvents();
     }
 }
 

@@ -4,6 +4,26 @@
 
 namespace Events
 {
+    RE::BSEventNotifyControl MenuEvent::ProcessEvent(const RE::MenuOpenCloseEvent* event, RE::BSTEventSource<RE::MenuOpenCloseEvent>*)
+    {
+        auto activateManager = Events::LootActivateEvent::GetSingleton();
+        auto menu            = Events::MenuEvent::GetSingleton();
+        auto lootMenu        = RE::ContainerMenu::MENU_NAME;
+
+        if (!event) {
+            return RE::BSEventNotifyControl::kContinue;
+        }
+
+        bool active = activateManager->wasActivated;
+        if (event->menuName == lootMenu) {
+            if (active) {
+                menu->CloseMenu(lootMenu);
+                active = false;
+            }
+        }
+        return RE::BSEventNotifyControl::kContinue;
+    };
+
     RE::BSEventNotifyControl LootActivateEvent::ProcessEvent(const RE::TESActivateEvent* eventPtr, RE::BSTEventSource<RE::TESActivateEvent>*)
     {
         if (!eventPtr)
@@ -30,6 +50,7 @@ namespace Events
 
             if (chance == settings->compareValue) {
                 logger::debug("you looked at {} and the random int was {}", event->objectActivated->GetDisplayFullName(), std::to_string(chance));
+                wasActivated = true;
                 dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
                 auto  dude  = dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnEnemy, false)->AsReference();
                 float scale = 0.001f;
@@ -46,6 +67,13 @@ namespace Events
                     });
                 }).detach();
                 dude->Enable(false);
+                std::jthread([=] {
+                    std::this_thread::sleep_for(1s);
+                    SKSE::GetTaskInterface()->AddTask([=] {
+                        wasActivated = false;
+                        logger::debug("set activated to false");
+                    });
+                }).detach();                
             }
         }
         return RE::BSEventNotifyControl::kContinue;

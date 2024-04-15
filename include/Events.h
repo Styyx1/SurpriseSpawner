@@ -19,7 +19,7 @@ namespace Events
 
         RE::BSEventNotifyControl ProcessEvent(const RE::TESActivateEvent* a_event, RE::BSTEventSource<RE::TESActivateEvent>*);
 
-        void RegisterEvents()
+        void RegisterActivateEvents()
         {
             logger::info("{:*^30}", "EVENTS");
 
@@ -30,5 +30,39 @@ namespace Events
         }
 
         bool wasActivated{ false };
+    };
+
+    class MenuEvent : public RE::BSTEventSink<RE::MenuOpenCloseEvent>
+    {
+        MenuEvent()                                  = default;
+        MenuEvent(const MenuEvent&)                  = delete;
+        MenuEvent(MenuEvent&&)                       = delete;
+        MenuEvent&    operator=(const MenuEvent&)    = delete;
+        MenuEvent& operator=(MenuEvent&&)            = delete;
+
+        public:
+        static MenuEvent* GetSingleton()
+        {
+            static MenuEvent singleton;
+            return &singleton;
+        }
+
+        RE::BSEventNotifyControl ProcessEvent(const RE::MenuOpenCloseEvent* event, RE::BSTEventSource<RE::MenuOpenCloseEvent>*) override;
+
+        void RegisterMenuEvents()
+        {
+            if (const auto scripts = RE::UI::GetSingleton()) {
+                scripts->AddEventSink<RE::MenuOpenCloseEvent>(this);
+                logger::info("Registered {}"sv, typeid(RE::MenuOpenCloseEvent).name());
+            }
+        }
+
+        inline void CloseMenu(RE::BSFixedString a_menuName)
+        {
+            if (const auto UIMsgQueue = RE::UIMessageQueue::GetSingleton(); UIMsgQueue) {
+                UIMsgQueue->AddMessage(a_menuName, RE::UI_MESSAGE_TYPE::kHide, nullptr);
+            }
+        }
+        
     };
 } // namespace Events
