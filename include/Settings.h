@@ -20,4 +20,8 @@ public:
     static RE::FormID ParseFormID(const std::string& str);
 
     inline static bool debug_logging{};
+
+    inline static bool npc_event_active{ true };
+    inline static bool draugr_container_event_active{ true };
+
 };
