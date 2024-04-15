@@ -45,7 +45,6 @@ RE::FormID Settings::ParseFormID(const std::string& str)
 void Settings::LoadForms()
 {
     auto dataHandler = RE::TESDataHandler::GetSingleton();
-    auto settings    = Settings::GetSingleton();
 
     logger::info("Loading forms");
     if (SpawnFormID)
