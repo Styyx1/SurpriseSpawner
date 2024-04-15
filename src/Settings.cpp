@@ -9,15 +9,16 @@ void Settings::LoadSettings() noexcept
     ini.SetUnicode();
     ini.LoadFile(R"(.\Data\SKSE\Plugins\SurpriseSpawner.ini)");
 
-    std::string spawnEnemyID(ini.GetValue("General", "SpawnFormID", ""));
-    std::string spawnExplosionID(ini.GetValue("General", "ExplosionFormID", ""));
     maxNumber                     = std::stoi(ini.GetValue("General", "iMaxNumberRand", ""));
     minNumber                     = std::stoi(ini.GetValue("General", "iMinNumberRand", ""));
     compareValue                  = std::stoi(ini.GetValue("General", "iCompareValue", ""));
     npc_event_active              = ini.GetBoolValue("Event Toggles", "bNPCEvent", "");
     npc_event_active              = ini.GetBoolValue("Event Toggles", "bNPCEvent", "");
     draugr_container_event_active = ini.GetBoolValue("Event Toggles", "bDraugrContainerEvent", "");
+
     std::string fileName(ini.GetValue("General", "sModFileName", ""));
+    std::string spawnEnemyID(ini.GetValue("General", "SpawnFormID", ""));
+    std::string spawnExplosionID(ini.GetValue("General", "ExplosionFormID", ""));
 
     debug_logging = ini.GetBoolValue("Log", "Debug");
 
