@@ -122,7 +122,7 @@ namespace Events
                         }
                     }
                 }
-            }            
+            }
         }
         return RE::BSEventNotifyControl::kContinue;
     }
