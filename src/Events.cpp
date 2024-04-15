@@ -46,7 +46,6 @@ namespace Events
             // it doesn't happen too often and
             // it doesn't happen on the same npc twice in a row
             // technically still possible but unlikely
-            // I still haven't figured out how to automatically close the menu
 
             if (chance == settings->compareValue) {
                 logger::debug("you looked at {} and the random int was {}", event->objectActivated->GetDisplayFullName(), std::to_string(chance));
@@ -56,6 +55,7 @@ namespace Events
                 float scale = 0.001f;
                 script->SetCommand(fmt::format(FMT_STRING("setscale {}"), scale));
                 script->CompileAndRun(dude);
+                dude->MoveTo(dead_guy);
                 logger::debug("shrinked dude");
                 std::jthread([=] {
                     std::this_thread::sleep_for(1.5s);

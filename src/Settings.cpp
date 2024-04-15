@@ -54,6 +54,6 @@ void Settings::LoadForms()
     if (SpawnExplosionFormID)
         SpawnExplosion = skyrim_cast<RE::BGSExplosion*>(dataHandler->LookupForm(SpawnExplosionFormID, FileName));
 
-    logger::debug("All Forms loaded");
+    logger::info("All Forms loaded");
 
 } // Credits: Colinswrath https://github.com/colinswrath/BladeAndBlunt
