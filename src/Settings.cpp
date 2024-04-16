@@ -19,6 +19,7 @@ void Settings::LoadSettings() noexcept
     std::string fileName(ini.GetValue("General", "sModFileName", ""));
     std::string spawnEnemyID(ini.GetValue("General", "SpawnFormID", ""));
     std::string spawnExplosionID(ini.GetValue("General", "ExplosionFormID", ""));
+    std::string DraugrChestSpawnID(ini.GetValue("General", "DraugrChestEnemy", ""));
 
     debug_logging = ini.GetBoolValue("Log", "Debug");
 
@@ -28,6 +29,10 @@ void Settings::LoadSettings() noexcept
 
     if (!spawnExplosionID.empty()) {
         SpawnExplosionFormID = ParseFormID(spawnExplosionID);
+    }
+
+    if (!DraugrChestSpawnID.empty()) {
+        DraugrEnemyFormID = ParseFormID(DraugrChestSpawnID);
     }
 
     if (debug_logging) {
@@ -57,6 +62,9 @@ void Settings::LoadForms()
 
     if (SpawnExplosionFormID)
         SpawnExplosion = skyrim_cast<RE::BGSExplosion*>(dataHandler->LookupForm(SpawnExplosionFormID, FileName));
+
+    if (DraugrEnemyFormID)
+        DraugrEnemy = skyrim_cast<RE::TESNPC*>(dataHandler->LookupForm(DraugrEnemyFormID, FileName));
 
     logger::info("All Forms loaded");
 

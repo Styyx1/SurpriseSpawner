@@ -100,6 +100,7 @@ namespace Events
                             mimic->Enable(false);
                             script->SetCommand(fmt::format(FMT_STRING("resetai")));
                             script->CompileAndRun(mimic);
+
                             mimic->MoveTo(event->objectActivated->AsReference());
                             Utility::GetSingleton()->RemoveAllItems(event->objectActivated->AsReference(), mimic);                         
                             event->objectActivated->AsReference()->Disable();
@@ -111,6 +112,11 @@ namespace Events
                                     script->SetCommand(fmt::format(FMT_STRING("setscale {}"), size));
                                     script->CompileAndRun(mimic);
                                     logger::debug("made dude big"); 
+
+                                    
+                                    
+                                    mimic->As<RE::Actor>()->UpdateCombat();
+
                                 });
                             }).detach();
                             //mimic->Enable(false);

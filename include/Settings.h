@@ -13,9 +13,11 @@ public:
 
     RE::FormID SpawnFormID;
     RE::FormID SpawnExplosionFormID;
+    RE::FormID DraugrEnemyFormID;
 
     RE::BGSExplosion* SpawnExplosion;
     RE::TESNPC*       SpawnEnemy; // had to be TESNPC* cause Actor* doesn't work
+    RE::TESNPC*       DraugrEnemy;
 
     static RE::FormID ParseFormID(const std::string& str);
 

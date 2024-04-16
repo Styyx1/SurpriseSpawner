@@ -9,7 +9,9 @@ public:
     void RemoveAllItems(RE::TESObjectREFR* a_refToRemoveFrom, RE::TESObjectREFR* a_refToGiveItems)
     {
         auto                           container = a_refToRemoveFrom->GetContainer();
-        std::list<RE::ContainerObject> badItems;
+
+        std::list<RE::ContainerObject> badItems;        
+
 
         for (int i = 0; i < a_refToRemoveFrom->GetContainer()->numContainerObjects; i++) {
             auto item = container->containerObjects[i];
