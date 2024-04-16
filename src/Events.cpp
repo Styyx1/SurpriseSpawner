@@ -112,13 +112,9 @@ namespace Events
                                     script->SetCommand(fmt::format(FMT_STRING("setscale {}"), size));
                                     script->CompileAndRun(mimic);
 
-                                    logger::debug("made dude big"); 
+                                    logger::debug("made dude big");
 
-                                    
-                                    
                                     mimic->As<RE::Actor>()->UpdateCombat();
-
-
                                 });
                             }).detach();
                             // mimic->Enable(false);
