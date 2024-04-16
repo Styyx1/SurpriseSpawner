@@ -61,11 +61,11 @@ namespace Events
                         float scale = 0.001f;
                         script->SetCommand(fmt::format(FMT_STRING("setscale {}"), scale));
                         script->CompileAndRun(dude);
-                        dude->MoveTo(dead_guy);
+                        dude->MoveTo(dead_guy);                                                
                         logger::debug("shrinked dude");
                         std::jthread([=] {
                             std::this_thread::sleep_for(1.5s);
-                            SKSE::GetTaskInterface()->AddTask([=] {
+                            SKSE::GetTaskInterface()->AddTask([=] {                                
                                 float size = 1.0f;
                                 script->SetCommand(fmt::format(FMT_STRING("setscale {}"), size));
                                 script->CompileAndRun(dude);
@@ -93,14 +93,15 @@ namespace Events
                         if (chance == settings->compareValue) {
                             wasActivated = true;
                             event->objectActivated->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
-                            auto  mimic = event->objectActivated->AsReference()->PlaceObjectAtMe(settings->SpawnEnemy, false)->AsReference();
+                            auto  mimic = event->objectActivated->AsReference()->PlaceObjectAtMe(settings->DraugrEnemy, false)->AsReference();
                             float scale = 0.001f;
                             script->SetCommand(fmt::format(FMT_STRING("setscale {}"), scale));
                             script->CompileAndRun(mimic);
-                            script->SetCommand(fmt::format(FMT_STRING("setscale {}"), scale));
-                            script->CompileAndRun(event->objectActivated->AsReference());
+                            mimic->Enable(false);
+                            script->SetCommand(fmt::format(FMT_STRING("resetai")));
+                            script->CompileAndRun(mimic);
                             mimic->MoveTo(event->objectActivated->AsReference());
-                            Utility::GetSingleton()->RemoveAllItems(event->objectActivated->AsReference(), mimic);
+                            Utility::GetSingleton()->RemoveAllItems(event->objectActivated->AsReference(), mimic);                         
                             event->objectActivated->AsReference()->Disable();
                             logger::debug("shrinked dude");
                             std::jthread([=] {
@@ -109,10 +110,10 @@ namespace Events
                                     float size = 1.0f;
                                     script->SetCommand(fmt::format(FMT_STRING("setscale {}"), size));
                                     script->CompileAndRun(mimic);
-                                    logger::debug("made dude big");
+                                    logger::debug("made dude big"); 
                                 });
                             }).detach();
-                            mimic->Enable(false);
+                            //mimic->Enable(false);
                             std::jthread([=] {
                                 std::this_thread::sleep_for(1s);
                                 SKSE::GetTaskInterface()->AddTask([=] {
