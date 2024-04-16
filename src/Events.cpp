@@ -99,7 +99,7 @@ namespace Events
                             script->CompileAndRun(mimic);
                             mimic->Enable(false);
                             script->SetCommand(fmt::format(FMT_STRING("resetai")));
-                            script->CompileAndRun(mimic); //no idea why this is needed but it fixed my spawn being passive 
+                            script->CompileAndRun(mimic); // no idea why this is needed but it fixed my spawn being passive
                             mimic->MoveTo(event->objectActivated->AsReference());
                             Utility::GetSingleton()->RemoveAllItems(event->objectActivated->AsReference(), mimic);
                             event->objectActivated->AsReference()->Disable();
