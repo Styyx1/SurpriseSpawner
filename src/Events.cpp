@@ -61,11 +61,11 @@ namespace Events
                         float scale = 0.001f;
                         script->SetCommand(fmt::format(FMT_STRING("setscale {}"), scale));
                         script->CompileAndRun(dude);
-                        dude->MoveTo(dead_guy);                                                
+                        dude->MoveTo(dead_guy);
                         logger::debug("shrinked dude");
                         std::jthread([=] {
                             std::this_thread::sleep_for(1.5s);
-                            SKSE::GetTaskInterface()->AddTask([=] {                                
+                            SKSE::GetTaskInterface()->AddTask([=] {
                                 float size = 1.0f;
                                 script->SetCommand(fmt::format(FMT_STRING("setscale {}"), size));
                                 script->CompileAndRun(dude);
@@ -102,7 +102,7 @@ namespace Events
                             script->CompileAndRun(mimic);
 
                             mimic->MoveTo(event->objectActivated->AsReference());
-                            Utility::GetSingleton()->RemoveAllItems(event->objectActivated->AsReference(), mimic);                         
+                            Utility::GetSingleton()->RemoveAllItems(event->objectActivated->AsReference(), mimic);
                             event->objectActivated->AsReference()->Disable();
                             logger::debug("shrinked dude");
                             std::jthread([=] {
@@ -111,15 +111,17 @@ namespace Events
                                     float size = 1.0f;
                                     script->SetCommand(fmt::format(FMT_STRING("setscale {}"), size));
                                     script->CompileAndRun(mimic);
+
                                     logger::debug("made dude big"); 
 
                                     
                                     
                                     mimic->As<RE::Actor>()->UpdateCombat();
 
+
                                 });
                             }).detach();
-                            //mimic->Enable(false);
+                            // mimic->Enable(false);
                             std::jthread([=] {
                                 std::this_thread::sleep_for(1s);
                                 SKSE::GetTaskInterface()->AddTask([=] {
