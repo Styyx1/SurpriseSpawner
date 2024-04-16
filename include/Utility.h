@@ -10,15 +10,13 @@ public:
     {
         auto                           container = a_refToRemoveFrom->GetContainer();
         std::list<RE::ContainerObject> badItems;
-        
 
         for (int i = 0; i < a_refToRemoveFrom->GetContainer()->numContainerObjects; i++) {
             auto item = container->containerObjects[i];
-            if (item && item->obj) {                    
-                 if (item->obj)
-                 {
-                     badItems.push_back(*item);
-                 }
+            if (item && item->obj) {
+                if (item->obj) {
+                    badItems.push_back(*item);
+                }
             }
             else {
                 logger::warn("Item at index {} was nullptr", i);
@@ -31,9 +29,9 @@ public:
                 auto lvlItem    = badItem.obj->As<RE::TESLeveledList>();
                 auto list_items = lvlItem->GetContainedForms();
                 for (auto& list_item : list_items) {
-                     a_refToRemoveFrom->GetHandle().get()->RemoveItem(list_item->As<RE::TESBoundObject>(), badItem.count, RE::ITEM_REMOVE_REASON::kRemove, nullptr,
-                                                                      a_refToGiveItems);
-                }                
+                    a_refToRemoveFrom->GetHandle().get()->RemoveItem(list_item->As<RE::TESBoundObject>(), badItem.count, RE::ITEM_REMOVE_REASON::kRemove, nullptr,
+                                                                     a_refToGiveItems);
+                }
             }
             else
                 a_refToRemoveFrom->GetHandle().get()->RemoveItem(badItem.obj->As<RE::TESBoundObject>(), badItem.count, RE::ITEM_REMOVE_REASON::kRemove, nullptr, a_refToGiveItems);
@@ -48,5 +46,4 @@ public:
             }
         }
     }
-
 };
