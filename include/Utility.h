@@ -73,6 +73,6 @@ public:
         else {
             logger::debug("no location found");
             return false;
-        }            
+        }
     }
 };
