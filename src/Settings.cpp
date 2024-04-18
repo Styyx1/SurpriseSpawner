@@ -56,8 +56,6 @@ void Settings::LoadSettings() noexcept
         WerewolfSpawnFormID = ParseFormID(WerewolfEnemySpawnID);
     }
 
-
-
     if (debug_logging) {
         spdlog::get("Global")->set_level(spdlog::level::level_enum::debug);
         logger::debug("Debug logging enabled");

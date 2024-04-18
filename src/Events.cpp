@@ -35,12 +35,11 @@ namespace Events
         auto util     = Utility::GetSingleton();
         auto player   = RE::PlayerCharacter::GetSingleton();
 
-        const auto  scriptFactory = RE::IFormFactory::GetConcreteFormFactoryByType<RE::Script>();
-        const auto  script        = scriptFactory ? scriptFactory->Create() : nullptr;       
+        const auto scriptFactory = RE::IFormFactory::GetConcreteFormFactoryByType<RE::Script>();
+        const auto script        = scriptFactory ? scriptFactory->Create() : nullptr;
 
-        
-        bool        isLocked      = event->objectActivated->IsLocked();
-        std::string nameOfCont    = event->objectActivated->GetName();
+        bool        isLocked   = event->objectActivated->IsLocked();
+        std::string nameOfCont = event->objectActivated->GetName();
 
         // Only do stuff when looking at dead actors
         if (eventPtr) {
@@ -53,7 +52,7 @@ namespace Events
                             auto chance = util->RandomInt(settings->minNumber, settings->maxNumber);
                             logger::debug("random chance number is: {}, but compare value is {}", std::to_string(chance), std::to_string(settings->compareValue));
                             logger::debug("you looked at {} and the random int was {}", event->objectActivated->GetDisplayFullName(), std::to_string(chance));
-                            if (chance == settings->compareValue) {                                
+                            if (chance == settings->compareValue) {
                                 wasActivated = true;
                                 dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
                                 auto  dude  = dead_guy->AsReference()->PlaceObjectAtMe(settings->WerewolfEnemy, false)->AsReference();
