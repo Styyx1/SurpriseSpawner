@@ -9,14 +9,14 @@ void Settings::LoadSettings() noexcept
     ini.SetUnicode();
     ini.LoadFile(R"(.\Data\SKSE\Plugins\SurpriseSpawner.ini)");
 
-    maxNumber                     = std::stoi(ini.GetValue("General", "iMaxNumberRand", ""));
-    minNumber                     = std::stoi(ini.GetValue("General", "iMinNumberRand", ""));
-    compareValue                  = std::stoi(ini.GetValue("General", "iCompareValue", ""));
-    npc_event_active              = ini.GetBoolValue("Event Toggles", "bNPCEvent", "");
-    npc_event_active              = ini.GetBoolValue("Event Toggles", "bNPCEvent", "");
-    draugr_container_event_active = ini.GetBoolValue("Event Toggles", "bDraugrContainerEvent");
+    maxNumber                      = std::stoi(ini.GetValue("General", "iMaxNumberRand", ""));
+    minNumber                      = std::stoi(ini.GetValue("General", "iMinNumberRand", ""));
+    compareValue                   = std::stoi(ini.GetValue("General", "iCompareValue", ""));
+    npc_event_active               = ini.GetBoolValue("Event Toggles", "bNPCEvent", "");
+    npc_event_active               = ini.GetBoolValue("Event Toggles", "bNPCEvent", "");
+    draugr_container_event_active  = ini.GetBoolValue("Event Toggles", "bDraugrContainerEvent");
     dwarven_container_event_active = ini.GetBoolValue("Event Toggles", "bDwarvenContainerEvent");
-    shade_container_event_active = ini.GetBoolValue("Event Toggles", "bShadeContainerEvent");
+    shade_container_event_active   = ini.GetBoolValue("Event Toggles", "bShadeContainerEvent");
 
     std::string fileName(ini.GetValue("General", "sModFileName", ""));
     std::string spawnEnemyID(ini.GetValue("Enemies", "CorpseSpawnFormID", ""));
@@ -27,7 +27,7 @@ void Settings::LoadSettings() noexcept
     std::string memeSoundID(ini.GetValue("Fun", "MemeSoundFormID", ""));
 
     toggle_meme_sound = ini.GetBoolValue("Fun", "bMemeSound");
-    debug_logging = ini.GetBoolValue("Log", "Debug");
+    debug_logging     = ini.GetBoolValue("Log", "Debug");
 
     if (!spawnEnemyID.empty()) {
         SpawnFormID = ParseFormID(spawnEnemyID);

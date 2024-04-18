@@ -34,13 +34,13 @@ namespace Events
         auto settings = Settings::GetSingleton();
         auto util     = Utility::GetSingleton();
         auto player   = RE::PlayerCharacter::GetSingleton();
-        
+
         const auto scriptFactory = RE::IFormFactory::GetConcreteFormFactoryByType<RE::Script>();
         const auto script        = scriptFactory ? scriptFactory->Create() : nullptr;
-        bool        DwarvenLoc    = player->GetCurrentLocation()->HasKeywordString("LocTypeDwarvenAutomatons");
-        bool        MageLoc       = player->GetCurrentLocation()->HasKeywordString("LocTypeWarlockLair");
-        bool        VampLoc       = player->GetCurrentLocation()->HasKeywordString("LocTypeVampireLair");
-        bool        DraugrLoc     = player->GetCurrentLocation()->HasKeywordString("LocTypeDraugrCrypt");
+        bool       DwarvenLoc    = player->GetCurrentLocation()->HasKeywordString("LocTypeDwarvenAutomatons");
+        bool       MageLoc       = player->GetCurrentLocation()->HasKeywordString("LocTypeWarlockLair");
+        bool       VampLoc       = player->GetCurrentLocation()->HasKeywordString("LocTypeVampireLair");
+        bool       DraugrLoc     = player->GetCurrentLocation()->HasKeywordString("LocTypeDraugrCrypt");
 
         // Only do stuff when looking at dead actors
         if (eventPtr) {
@@ -59,7 +59,7 @@ namespace Events
 
                     if (chance == settings->compareValue) {
                         logger::debug("you looked at {} and the random int was {}", event->objectActivated->GetDisplayFullName(), std::to_string(chance));
-                        
+
                         wasActivated = true;
                         dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
                         auto  dude  = dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnEnemy, false)->AsReference();
@@ -90,8 +90,7 @@ namespace Events
                 }
             }
             if (event->objectActivated->GetBaseObject()->GetFormType() == RE::FormType::Container) {
-
-                 if (settings->dwarven_container_event_active && DwarvenLoc) {
+                if (settings->dwarven_container_event_active && DwarvenLoc) {
                     auto chance = util->RandomInt(settings->minNumber, settings->maxNumber);
                     logger::debug("I'm in a dungeon named:  ", player->GetCurrentLocation()->GetName());
                     logger::debug("random chance number is: {}, but compare value is {}", std::to_string(chance), std::to_string(settings->compareValue));
@@ -113,9 +112,9 @@ namespace Events
                             });
                         }).detach();
                     }
-                 }
+                }
 
-                 else if (settings->shade_container_event_active && (VampLoc || MageLoc)) {
+                else if (settings->shade_container_event_active && (VampLoc || MageLoc)) {
                     auto chance = util->RandomInt(settings->minNumber, settings->maxNumber);
                     logger::debug("I'm in a dungeon named:  ", player->GetCurrentLocation()->GetName());
                     logger::debug("random chance number is: {}, but compare value is {}", std::to_string(chance), std::to_string(settings->compareValue));
@@ -137,8 +136,8 @@ namespace Events
                             });
                         }).detach();
                     }
-                 }
-                 else if (settings->draugr_container_event_active && DraugrLoc) {
+                }
+                else if (settings->draugr_container_event_active && DraugrLoc) {
                     auto chance = util->RandomInt(settings->minNumber, settings->maxNumber);
                     logger::debug("I'm in a dungeon named:  ", player->GetCurrentLocation()->GetName());
                     logger::debug("random chance number is: {}, but compare value is {}", std::to_string(chance), std::to_string(settings->compareValue));
@@ -160,9 +159,8 @@ namespace Events
                             });
                         }).detach();
                     }
-                 }
+                }
             }
-            
         }
         return RE::BSEventNotifyControl::kContinue;
     }

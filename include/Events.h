@@ -30,7 +30,6 @@ namespace Events
         }
 
         bool wasActivated{ false };
-       
     };
 
     class MenuEvent : public RE::BSTEventSink<RE::MenuOpenCloseEvent>
