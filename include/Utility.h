@@ -70,8 +70,9 @@ public:
             return player->GetCurrentLocation()->HasKeywordString(locKeyword);
             logger::debug("current location is: {}", player->GetCurrentLocation()->GetName());
         }
-        else
+        else {
             logger::debug("no location found");
-        return false;
+            return false;
+        }            
     }
 };
