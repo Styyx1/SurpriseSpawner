@@ -17,12 +17,15 @@ public:
     RE::FormID DwarvenSpawnFormID;
     RE::FormID ShadeSpawnFormID;
     RE::FormID MemeSoundFormID;
+    RE::FormID WerewolfSpawnFormID;
 
     RE::BGSExplosion* SpawnExplosion;
     RE::TESNPC*       SpawnEnemy; // had to be TESNPC* cause Actor* doesn't work
     RE::TESNPC*       DraugrEnemy;
     RE::TESNPC*       DwarvenEnemy;
     RE::TESNPC*       ShadeEnemy;
+    RE::TESNPC*       WerewolfEnemy;
+    RE::TESFaction*   WerewolfFaction;
 
     RE::BGSSoundDescriptorForm* MemeSound;
 

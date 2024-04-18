@@ -61,4 +61,19 @@ public:
         else
             return;
     }
+
+    bool LocationCheck(std::string_view locKeyword) {
+
+        auto               player     = RE::PlayerCharacter::GetSingleton();
+
+        if (player->GetCurrentLocation() != nullptr) {
+            return player->GetCurrentLocation()->HasKeywordString(locKeyword);
+            logger::debug("current location is: {}", player->GetCurrentLocation()->GetName());
+        }
+        else
+            logger::debug("no location found");
+            return false;
+    }
+
+    
 };

@@ -24,6 +24,7 @@ void Settings::LoadSettings() noexcept
     std::string DraugrChestSpawnID(ini.GetValue("Enemies", "DraugrChestEnemy", ""));
     std::string DwarvenChestSpawnID(ini.GetValue("Enemies", "DwarvenChestEnemy", ""));
     std::string ShadeChestSpawnID(ini.GetValue("Enemies", "ShadeChestEnemy", ""));
+    std::string WerewolfEnemySpawnID(ini.GetValue("Enemies", "WerewolfSpawnEnemy", ""));
     std::string memeSoundID(ini.GetValue("Fun", "MemeSoundFormID", ""));
 
     toggle_meme_sound = ini.GetBoolValue("Fun", "bMemeSound");
@@ -51,6 +52,11 @@ void Settings::LoadSettings() noexcept
     if (!memeSoundID.empty()) {
         MemeSoundFormID = ParseFormID(memeSoundID);
     }
+    if (!WerewolfEnemySpawnID.empty()) {
+        WerewolfSpawnFormID = ParseFormID(WerewolfEnemySpawnID);
+    }
+
+
 
     if (debug_logging) {
         spdlog::get("Global")->set_level(spdlog::level::level_enum::debug);
@@ -91,6 +97,14 @@ void Settings::LoadForms() noexcept
 
     if (MemeSoundFormID)
         MemeSound = skyrim_cast<RE::BGSSoundDescriptorForm*>(dataHandler->LookupForm(MemeSoundFormID, FileName));
+
+    if (WerewolfSpawnFormID)
+        WerewolfEnemy = skyrim_cast<RE::TESNPC*>(dataHandler->LookupForm(WerewolfSpawnFormID, FileName));
+
+    // Hardcoded Loads
+
+    WerewolfFaction = dataHandler->LookupForm(ParseFormID("0x43594"), "Skyrim.esm")->As<RE::TESFaction>();
+    logger::debug("loaded Faction: {}", WerewolfFaction->GetName());
 
     logger::info("All Forms loaded");
 
