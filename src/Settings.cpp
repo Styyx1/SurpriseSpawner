@@ -14,13 +14,19 @@ void Settings::LoadSettings() noexcept
     compareValue                  = std::stoi(ini.GetValue("General", "iCompareValue", ""));
     npc_event_active              = ini.GetBoolValue("Event Toggles", "bNPCEvent", "");
     npc_event_active              = ini.GetBoolValue("Event Toggles", "bNPCEvent", "");
-    draugr_container_event_active = ini.GetBoolValue("Event Toggles", "bDraugrContainerEvent", "");
+    draugr_container_event_active = ini.GetBoolValue("Event Toggles", "bDraugrContainerEvent");
+    dwarven_container_event_active = ini.GetBoolValue("Event Toggles", "bDwarvenContainerEvent");
+    shade_container_event_active = ini.GetBoolValue("Event Toggles", "bShadeContainerEvent");
 
     std::string fileName(ini.GetValue("General", "sModFileName", ""));
-    std::string spawnEnemyID(ini.GetValue("General", "SpawnFormID", ""));
+    std::string spawnEnemyID(ini.GetValue("Enemies", "CorpseSpawnFormID", ""));
     std::string spawnExplosionID(ini.GetValue("General", "ExplosionFormID", ""));
-    std::string DraugrChestSpawnID(ini.GetValue("General", "DraugrChestEnemy", ""));
+    std::string DraugrChestSpawnID(ini.GetValue("Enemies", "DraugrChestEnemy", ""));
+    std::string DwarvenChestSpawnID(ini.GetValue("Enemies", "DwarvenChestEnemy", ""));
+    std::string ShadeChestSpawnID(ini.GetValue("Enemies", "ShadeChestEnemy", ""));
+    std::string memeSoundID(ini.GetValue("Fun", "MemeSoundFormID", ""));
 
+    toggle_meme_sound = ini.GetBoolValue("Fun", "bMemeSound");
     debug_logging = ini.GetBoolValue("Log", "Debug");
 
     if (!spawnEnemyID.empty()) {
@@ -33,6 +39,17 @@ void Settings::LoadSettings() noexcept
 
     if (!DraugrChestSpawnID.empty()) {
         DraugrEnemyFormID = ParseFormID(DraugrChestSpawnID);
+    }
+
+    if (!DwarvenChestSpawnID.empty()) {
+        DwarvenSpawnFormID = ParseFormID(DwarvenChestSpawnID);
+    }
+
+    if (!ShadeChestSpawnID.empty()) {
+        ShadeSpawnFormID = ParseFormID(ShadeChestSpawnID);
+    }
+    if (!memeSoundID.empty()) {
+        MemeSoundFormID = ParseFormID(memeSoundID);
     }
 
     if (debug_logging) {
@@ -52,7 +69,7 @@ RE::FormID Settings::ParseFormID(const std::string& str)
     return result;
 }
 
-void Settings::LoadForms()
+void Settings::LoadForms() noexcept
 {
     auto dataHandler = RE::TESDataHandler::GetSingleton();
 
@@ -65,6 +82,15 @@ void Settings::LoadForms()
 
     if (DraugrEnemyFormID)
         DraugrEnemy = skyrim_cast<RE::TESNPC*>(dataHandler->LookupForm(DraugrEnemyFormID, FileName));
+
+    if (DwarvenSpawnFormID)
+        DwarvenEnemy = skyrim_cast<RE::TESNPC*>(dataHandler->LookupForm(DwarvenSpawnFormID, FileName));
+
+    if (ShadeSpawnFormID)
+        ShadeEnemy = skyrim_cast<RE::TESNPC*>(dataHandler->LookupForm(ShadeSpawnFormID, FileName));
+
+    if (MemeSoundFormID)
+        MemeSound = skyrim_cast<RE::BGSSoundDescriptorForm*>(dataHandler->LookupForm(MemeSoundFormID, FileName));
 
     logger::info("All Forms loaded");
 
