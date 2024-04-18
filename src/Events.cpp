@@ -41,10 +41,14 @@ namespace Events
         bool       MageLoc       = player->GetCurrentLocation()->HasKeywordString("LocTypeWarlockLair");
         bool       VampLoc       = player->GetCurrentLocation()->HasKeywordString("LocTypeVampireLair");
         bool       DraugrLoc     = player->GetCurrentLocation()->HasKeywordString("LocTypeDraugrCrypt");
+        bool       isLocked      = event->objectActivated->IsLocked();
+        std::string nameOfCont    = event->objectActivated->GetName();
 
         // Only do stuff when looking at dead actors
         if (eventPtr) {
             logger::debug("form type of activated object is: {}", RE::FormTypeToString(event->objectActivated->GetBaseObject()->GetFormType()));
+            if (event->actionRef->IsPlayerRef()) {
+            
 
             if (settings->npc_event_active) {
                 RE::Actor* dead_guy = event->objectActivated->As<RE::Actor>();
@@ -89,8 +93,35 @@ namespace Events
                     }
                 }
             }
-            if (event->objectActivated->GetBaseObject()->GetFormType() == RE::FormType::Container) {
-                if (settings->dwarven_container_event_active && DwarvenLoc) {
+            if (event->objectActivated->GetBaseObject()->GetFormType() == RE::FormType::Container && !isLocked) {
+                if (settings->draugr_container_event_active && nameOfCont.contains("raugr")) {                        
+                        auto        chance     = util->RandomInt(settings->minNumber, settings->maxNumber);
+                        logger::debug("I'm in a dungeon named:  ", player->GetCurrentLocation()->GetName());
+                        logger::debug("random chance number is: {}, but compare value is {}", std::to_string(chance), std::to_string(settings->compareValue));
+                       
+                            if (chance == settings->compareValue) {
+                                wasActivated = true;
+                                event->objectActivated->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
+                                auto mimic = event->objectActivated->AsReference()->PlaceObjectAtMe(settings->DraugrEnemy, false)->AsReference();
+                                event->objectActivated->AsReference()->Disable();
+                                util->PlayMeme(settings->MemeSound);
+                                script->SetCommand(fmt::format(FMT_STRING("resetai")));
+                                script->CompileAndRun(mimic); // no idea why this is needed but it fixed my spawn being passive
+                                util->RemoveAllItems(event->objectActivated->AsReference(), mimic);
+                                mimic->PlayAnimation("GetUpStart", "GetUpEnd");
+                                std::jthread([=] {
+                                    std::this_thread::sleep_for(1s);
+                                    SKSE::GetTaskInterface()->AddTask([=] {
+                                        wasActivated = false;
+                                        logger::debug("set activated to false");
+                                    });
+                                }).detach();
+                            }
+                        
+                    }
+
+
+                else if (settings->dwarven_container_event_active && DwarvenLoc) {
                     auto chance = util->RandomInt(settings->minNumber, settings->maxNumber);
                     logger::debug("I'm in a dungeon named:  ", player->GetCurrentLocation()->GetName());
                     logger::debug("random chance number is: {}, but compare value is {}", std::to_string(chance), std::to_string(settings->compareValue));
@@ -103,7 +134,7 @@ namespace Events
                         script->SetCommand(fmt::format(FMT_STRING("resetai")));
                         script->CompileAndRun(mimic); // no idea why this is needed but it fixed my spawn being passive
                         mimic->MoveTo(event->objectActivated->AsReference());
-                        Utility::GetSingleton()->RemoveAllItems(event->objectActivated->AsReference(), mimic);
+                        util->RemoveAllItems(event->objectActivated->AsReference(), mimic);
                         std::jthread([=] {
                             std::this_thread::sleep_for(1s);
                             SKSE::GetTaskInterface()->AddTask([=] {
@@ -127,7 +158,7 @@ namespace Events
                         script->SetCommand(fmt::format(FMT_STRING("resetai")));
                         script->CompileAndRun(mimic); // no idea why this is needed but it fixed my spawn being passive
                         mimic->MoveTo(event->objectActivated->AsReference());
-                        Utility::GetSingleton()->RemoveAllItems(event->objectActivated->AsReference(), mimic);
+                        util->RemoveAllItems(event->objectActivated->AsReference(), mimic);
                         std::jthread([=] {
                             std::this_thread::sleep_for(1s);
                             SKSE::GetTaskInterface()->AddTask([=] {
@@ -137,29 +168,8 @@ namespace Events
                         }).detach();
                     }
                 }
-                else if (settings->draugr_container_event_active && DraugrLoc) {
-                    auto chance = util->RandomInt(settings->minNumber, settings->maxNumber);
-                    logger::debug("I'm in a dungeon named:  ", player->GetCurrentLocation()->GetName());
-                    logger::debug("random chance number is: {}, but compare value is {}", std::to_string(chance), std::to_string(settings->compareValue));
-                    if (chance == settings->compareValue) {
-                        wasActivated = true;
-                        event->objectActivated->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
-                        auto mimic = event->objectActivated->AsReference()->PlaceObjectAtMe(settings->DraugrEnemy, false)->AsReference();
-                        event->objectActivated->AsReference()->Disable();
-                        util->PlayMeme(settings->MemeSound);
-                        script->SetCommand(fmt::format(FMT_STRING("resetai")));
-                        script->CompileAndRun(mimic); // no idea why this is needed but it fixed my spawn being passive
-                        mimic->MoveTo(event->objectActivated->AsReference());
-                        Utility::GetSingleton()->RemoveAllItems(event->objectActivated->AsReference(), mimic);
-                        std::jthread([=] {
-                            std::this_thread::sleep_for(1s);
-                            SKSE::GetTaskInterface()->AddTask([=] {
-                                wasActivated = false;
-                                logger::debug("set activated to false");
-                            });
-                        }).detach();
-                    }
-                }
+                
+            }
             }
         }
         return RE::BSEventNotifyControl::kContinue;

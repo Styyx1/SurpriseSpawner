@@ -36,3 +36,4 @@ build
 .vs
 extern
 contrib/PluginRelease
+contrib/*Debug*
