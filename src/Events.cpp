@@ -62,50 +62,46 @@ namespace Events
                                     SKSE::GetTaskInterface()->AddTask([=] {
                                         float size = 1.0f;
                                         script->SetCommand(fmt::format(FMT_STRING("setscale {}"), size));
-                                        script->CompileAndRun(dude);                                        
+                                        script->CompileAndRun(dude);
                                         util->PlayMeme(settings->MemeSound);
                                     });
                                 }).detach();
                                 dude->Enable(false);
                                 std::jthread([=] {
                                     std::this_thread::sleep_for(1s);
-                                    SKSE::GetTaskInterface()->AddTask([=] {
-                                        wasActivated = false;                                       
-                                    });
+                                    SKSE::GetTaskInterface()->AddTask([=] { wasActivated = false; });
                                 }).detach();
                             }
                         }
                         else {
                             auto chance = util->RandomInt(settings->minNumber, settings->maxNumber);
-                            
+
                             // check for a random number, so
                             // it doesn't happen too often and
                             // it doesn't happen on the same npc twice in a row
                             // technically still possible but unlikely
 
-                            if (chance == settings->compareValue) {                               
+                            if (chance == settings->compareValue) {
                                 wasActivated = true;
                                 dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
                                 auto  dude  = dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnEnemy, false)->AsReference();
                                 float scale = 0.001f;
                                 script->SetCommand(fmt::format(FMT_STRING("setscale {}"), scale));
                                 script->CompileAndRun(dude);
-                                dude->MoveTo(dead_guy);                                
+                                dude->MoveTo(dead_guy);
                                 std::jthread([=] {
                                     std::this_thread::sleep_for(1.5s);
                                     SKSE::GetTaskInterface()->AddTask([=] {
                                         float size = 1.0f;
                                         script->SetCommand(fmt::format(FMT_STRING("setscale {}"), size));
-                                        script->CompileAndRun(dude);                                        
+                                        script->CompileAndRun(dude);
                                         util->PlayMeme(settings->MemeSound);
                                     });
                                 }).detach();
                                 dude->Enable(false);
                                 std::jthread([=] {
                                     std::this_thread::sleep_for(1s);
-                                    SKSE::GetTaskInterface()->AddTask([=] {
-                                        wasActivated = false;                                        
-                                    });
+                                    SKSE::GetTaskInterface()->AddTask([=] { wasActivated = false; });
                                 }).detach();
                             }
                         }
@@ -113,7 +109,7 @@ namespace Events
                 }
                 if (event->objectActivated->GetBaseObject()->GetFormType() == RE::FormType::Container && !isLocked) {
                     if (settings->draugr_container_event_active && nameOfCont.contains("raugr")) {
-                        auto chance = util->RandomInt(settings->minNumber, settings->maxNumber);                        
+                        auto chance = util->RandomInt(settings->minNumber, settings->maxNumber);
                         if (chance == settings->compareValue) {
                             wasActivated = true;
                             event->objectActivated->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
@@ -148,9 +144,7 @@ namespace Events
                             util->RemoveAllItems(event->objectActivated->AsReference(), mimic);
                             std::jthread([=] {
                                 std::this_thread::sleep_for(1s);
-                                SKSE::GetTaskInterface()->AddTask([=] {
-                                    wasActivated = false;                                    
-                                });
+                                SKSE::GetTaskInterface()->AddTask([=] { wasActivated = false; });
                             }).detach();
                         }
                     }
@@ -169,9 +163,7 @@ namespace Events
                             util->RemoveAllItems(event->objectActivated->AsReference(), mimic);
                             std::jthread([=] {
                                 std::this_thread::sleep_for(1s);
-                                SKSE::GetTaskInterface()->AddTask([=] {
-                                    wasActivated = false;
-                                });
+                                SKSE::GetTaskInterface()->AddTask([=] { wasActivated = false; });
                             }).detach();
                         }
                     }
