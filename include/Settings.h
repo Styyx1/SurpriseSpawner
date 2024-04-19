@@ -41,5 +41,4 @@ public:
     inline static bool shade_container_event_active{ true };
     inline static bool generic_container_event_active{ true };
     inline static bool toggle_meme_sound{ false };
-
 };

@@ -17,7 +17,7 @@ void Settings::LoadSettings() noexcept
     draugr_container_event_active  = ini.GetBoolValue("Event Toggles", "bDraugrContainerEvent");
     dwarven_container_event_active = ini.GetBoolValue("Event Toggles", "bDwarvenContainerEvent");
     shade_container_event_active   = ini.GetBoolValue("Event Toggles", "bShadeContainerEvent");
-    generic_container_event_active   = ini.GetBoolValue("Event Toggles", "bGenericContainerEvents");
+    generic_container_event_active = ini.GetBoolValue("Event Toggles", "bGenericContainerEvents");
 
     std::string fileName(ini.GetValue("General", "sModFileName", ""));
     std::string spawnEnemyID(ini.GetValue("Enemies", "CorpseSpawnFormID", ""));
