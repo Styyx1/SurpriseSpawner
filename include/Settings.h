@@ -18,6 +18,7 @@ public:
     RE::FormID ShadeSpawnFormID;
     RE::FormID MemeSoundFormID;
     RE::FormID WerewolfSpawnFormID;
+    RE::FormID MimicSpawnFormID;
 
     RE::BGSExplosion* SpawnExplosion;
     RE::TESNPC*       SpawnEnemy; // had to be TESNPC* cause Actor* doesn't work
@@ -25,6 +26,7 @@ public:
     RE::TESNPC*       DwarvenEnemy;
     RE::TESNPC*       ShadeEnemy;
     RE::TESNPC*       WerewolfEnemy;
+    RE::TESNPC*       MimicEnemy;
     RE::TESFaction*   WerewolfFaction;
 
     RE::BGSSoundDescriptorForm* MemeSound;
@@ -37,5 +39,7 @@ public:
     inline static bool draugr_container_event_active{ true };
     inline static bool dwarven_container_event_active{ true };
     inline static bool shade_container_event_active{ true };
+    inline static bool generic_container_event_active{ true };
     inline static bool toggle_meme_sound{ false };
+
 };

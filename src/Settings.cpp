@@ -17,6 +17,7 @@ void Settings::LoadSettings() noexcept
     draugr_container_event_active  = ini.GetBoolValue("Event Toggles", "bDraugrContainerEvent");
     dwarven_container_event_active = ini.GetBoolValue("Event Toggles", "bDwarvenContainerEvent");
     shade_container_event_active   = ini.GetBoolValue("Event Toggles", "bShadeContainerEvent");
+    generic_container_event_active   = ini.GetBoolValue("Event Toggles", "bGenericContainerEvents");
 
     std::string fileName(ini.GetValue("General", "sModFileName", ""));
     std::string spawnEnemyID(ini.GetValue("Enemies", "CorpseSpawnFormID", ""));
@@ -25,10 +26,15 @@ void Settings::LoadSettings() noexcept
     std::string DwarvenChestSpawnID(ini.GetValue("Enemies", "DwarvenChestEnemy", ""));
     std::string ShadeChestSpawnID(ini.GetValue("Enemies", "ShadeChestEnemy", ""));
     std::string WerewolfEnemySpawnID(ini.GetValue("Enemies", "WerewolfSpawnEnemy", ""));
+    std::string MimicSpawnID(ini.GetValue("Enemies", "MimicSpawnEnemy", ""));
     std::string memeSoundID(ini.GetValue("Fun", "MemeSoundFormID", ""));
 
     toggle_meme_sound = ini.GetBoolValue("Fun", "bMemeSound");
     debug_logging     = ini.GetBoolValue("Log", "Debug");
+
+    if (!MimicSpawnID.empty()) {
+        MimicSpawnFormID = ParseFormID(MimicSpawnID);
+    }
 
     if (!spawnEnemyID.empty()) {
         SpawnFormID = ParseFormID(spawnEnemyID);
@@ -98,6 +104,9 @@ void Settings::LoadForms() noexcept
 
     if (WerewolfSpawnFormID)
         WerewolfEnemy = skyrim_cast<RE::TESNPC*>(dataHandler->LookupForm(WerewolfSpawnFormID, FileName));
+
+    if (MimicSpawnFormID)
+        MimicEnemy = skyrim_cast<RE::TESNPC*>(dataHandler->LookupForm(MimicSpawnFormID, FileName));
 
     // Hardcoded Loads
 

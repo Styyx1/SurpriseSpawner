@@ -129,7 +129,6 @@ namespace Events
                             }).detach();
                         }
                     }
-
                     else if (settings->dwarven_container_event_active && util->LocationCheck("LocTypeDwarvenAutomatons")) {
                         auto chance = util->RandomInt(settings->minNumber, settings->maxNumber);
                         if (chance == settings->compareValue) {
@@ -148,7 +147,6 @@ namespace Events
                             }).detach();
                         }
                     }
-
                     else if (settings->shade_container_event_active && (util->LocationCheck("LocTypeWarlockLair") || util->LocationCheck("LocTypeVampireLair"))) {
                         auto chance = util->RandomInt(settings->minNumber, settings->maxNumber);
                         if (chance == settings->compareValue) {
@@ -165,6 +163,26 @@ namespace Events
                                 std::this_thread::sleep_for(1s);
                                 SKSE::GetTaskInterface()->AddTask([=] { wasActivated = false; });
                             }).detach();
+                        }
+                    }
+                    else {
+                        if (settings->generic_container_event_active) {
+                            auto chance = util->RandomInt(settings->minNumber, settings->maxNumber);
+                            if (chance == settings->compareValue) {
+                                wasActivated = true;
+                                event->objectActivated->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
+                                auto mimic = event->objectActivated->AsReference()->PlaceObjectAtMe(settings->MimicEnemy, false)->AsReference();
+                                event->objectActivated->AsReference()->Disable();
+                                util->PlayMeme(settings->MemeSound);
+                                script->SetCommand(fmt::format(FMT_STRING("resetai")));
+                                script->CompileAndRun(mimic); // no idea why this is needed but it fixed my spawn being passive
+                                mimic->MoveTo(event->objectActivated->AsReference());
+                                util->RemoveAllItems(event->objectActivated->AsReference(), mimic);
+                                std::jthread([=] {
+                                    std::this_thread::sleep_for(1s);
+                                    SKSE::GetTaskInterface()->AddTask([=] { wasActivated = false; });
+                                }).detach();
+                            }
                         }
                     }
                 }
