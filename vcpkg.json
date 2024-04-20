@@ -7,7 +7,9 @@
     "spdlog",
     "rapidcsv",
     "simpleini",
+    "rsm-binary-io",
     "xbyak",
+    "directxtk",
     "clib-util"
   ],
   "license": "GPL-3.0-or-later",
