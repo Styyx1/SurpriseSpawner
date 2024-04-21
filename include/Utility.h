@@ -35,15 +35,7 @@ public:
             }
             else
                 a_refToRemoveFrom->GetHandle().get()->RemoveItem(badItem.obj->As<RE::TESBoundObject>(), badItem.count, RE::ITEM_REMOVE_REASON::kRemove, nullptr, a_refToGiveItems);
-        }
-        for (int i = 0; i < a_refToRemoveFrom->GetContainer()->numContainerObjects; i++) {
-            auto item = a_refToRemoveFrom->GetContainer()->containerObjects[i];
-            if (item && item->obj) {
-                if (item->obj->formID == 0xF || item->obj->formID == 0x1397D) {
-                    logger::error("Failed to remove item {}", item->obj->GetName());
-                }
-            }
-        }
+        }        
     }
 
     void PlayMeme(RE::BGSSoundDescriptorForm* sound)

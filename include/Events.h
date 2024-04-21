@@ -1,4 +1,5 @@
 #pragma once
+#include "Settings.h"
 
 namespace Events
 {
@@ -30,6 +31,18 @@ namespace Events
         }
 
         bool wasActivated{ false };
+
+        bool isContainerEventsActive() {
+            auto settings = Settings::GetSingleton();
+            if (settings->draugr_container_event_active || settings->dwarven_container_event_active || settings->generic_container_event_active
+                || settings->urn_explosion_event_active || settings->shade_container_event_active)
+                {
+                return true;
+                }
+            else
+                return false;
+
+        }
     };
 
     class MenuEvent : public RE::BSTEventSink<RE::MenuOpenCloseEvent>

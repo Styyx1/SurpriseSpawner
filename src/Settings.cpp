@@ -18,10 +18,12 @@ void Settings::LoadSettings() noexcept
     dwarven_container_event_active = ini.GetBoolValue("Event Toggles", "bDwarvenContainerEvent");
     shade_container_event_active   = ini.GetBoolValue("Event Toggles", "bShadeContainerEvent");
     generic_container_event_active = ini.GetBoolValue("Event Toggles", "bGenericContainerEvents");
+    urn_explosion_event_active     = ini.GetBoolValue("Event Toggles", "bUrnContainerEvents");
 
     std::string fileName(ini.GetValue("General", "sModFileName", ""));
     std::string spawnEnemyID(ini.GetValue("Enemies", "CorpseSpawnFormID", ""));
     std::string spawnExplosionID(ini.GetValue("General", "ExplosionFormID", ""));
+    std::string spawnUrnExplosionID(ini.GetValue("General", "UrnExplosionFormID", ""));
     std::string DraugrChestSpawnID(ini.GetValue("Enemies", "DraugrChestEnemy", ""));
     std::string DwarvenChestSpawnID(ini.GetValue("Enemies", "DwarvenChestEnemy", ""));
     std::string ShadeChestSpawnID(ini.GetValue("Enemies", "ShadeChestEnemy", ""));
@@ -61,6 +63,9 @@ void Settings::LoadSettings() noexcept
     if (!WerewolfEnemySpawnID.empty()) {
         WerewolfSpawnFormID = ParseFormID(WerewolfEnemySpawnID);
     }
+    if (!spawnUrnExplosionID.empty()) {
+        SpawnUrnExplosionFormID = ParseFormID(spawnUrnExplosionID);
+    }
 
     if (debug_logging) {
         spdlog::get("Global")->set_level(spdlog::level::level_enum::debug);
@@ -89,6 +94,9 @@ void Settings::LoadForms() noexcept
 
     if (SpawnExplosionFormID)
         SpawnExplosion = skyrim_cast<RE::BGSExplosion*>(dataHandler->LookupForm(SpawnExplosionFormID, FileName));
+
+    if (SpawnUrnExplosionFormID)
+        UrnExplosion = skyrim_cast<RE::BGSExplosion*>(dataHandler->LookupForm(SpawnUrnExplosionFormID, FileName));
 
     if (DraugrEnemyFormID)
         DraugrEnemy = skyrim_cast<RE::TESNPC*>(dataHandler->LookupForm(DraugrEnemyFormID, FileName));

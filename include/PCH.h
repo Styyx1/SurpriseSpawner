@@ -180,26 +180,5 @@ public:
 namespace stl
 {
     using namespace SKSE::stl;
-
-    template <typename T>
-    constexpr auto write_thunk_call() noexcept
-    {
-        SKSE::AllocTrampoline(14);
-        auto& trampoline{ SKSE::GetTrampoline() };
-        T::func = trampoline.write_call<5>(T::address, T::Thunk);
-    }
-
-    template <typename TDest, typename TSource>
-    constexpr auto write_vfunc() noexcept
-    {
-        REL::Relocation<std::uintptr_t> vtbl{ TDest::VTABLE[0] };
-        TSource::func = vtbl.write_vfunc(TSource::idx, TSource::Thunk);
-    }
-
-    template <typename T>
-    constexpr auto write_vfunc(const REL::VariantID variant_id) noexcept
-    {
-        REL::Relocation<std::uintptr_t> vtbl{ variant_id };
-        T::func = vtbl.write_vfunc(T::idx, T::Thunk);
-    }
+    
 } // namespace stl

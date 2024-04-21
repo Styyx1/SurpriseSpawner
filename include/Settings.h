@@ -13,6 +13,7 @@ public:
 
     RE::FormID SpawnFormID;
     RE::FormID SpawnExplosionFormID;
+    RE::FormID SpawnUrnExplosionFormID;
     RE::FormID DraugrEnemyFormID;
     RE::FormID DwarvenSpawnFormID;
     RE::FormID ShadeSpawnFormID;
@@ -21,6 +22,7 @@ public:
     RE::FormID MimicSpawnFormID;
 
     RE::BGSExplosion* SpawnExplosion;
+    RE::BGSExplosion* UrnExplosion;
     RE::TESNPC*       SpawnEnemy; // had to be TESNPC* cause Actor* doesn't work
     RE::TESNPC*       DraugrEnemy;
     RE::TESNPC*       DwarvenEnemy;
@@ -40,5 +42,6 @@ public:
     inline static bool dwarven_container_event_active{ true };
     inline static bool shade_container_event_active{ true };
     inline static bool generic_container_event_active{ true };
+    inline static bool urn_explosion_event_active{ true };
     inline static bool toggle_meme_sound{ false };
 };
