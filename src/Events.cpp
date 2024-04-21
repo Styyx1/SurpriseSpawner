@@ -203,7 +203,7 @@ namespace Events
                 }
             }
         }
-        
+
         return RE::BSEventNotifyControl::kContinue;
     }
 } // namespace Events

@@ -35,7 +35,7 @@ public:
             }
             else
                 a_refToRemoveFrom->GetHandle().get()->RemoveItem(badItem.obj->As<RE::TESBoundObject>(), badItem.count, RE::ITEM_REMOVE_REASON::kRemove, nullptr, a_refToGiveItems);
-        }        
+        }
     }
 
     void PlayMeme(RE::BGSSoundDescriptorForm* sound)

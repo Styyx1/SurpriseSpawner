@@ -180,5 +180,5 @@ public:
 namespace stl
 {
     using namespace SKSE::stl;
-    
+
 } // namespace stl
