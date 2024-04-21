@@ -34,6 +34,5 @@
 build
 *ReSharper*
 .vs
-extern
 contrib/PluginRelease
 contrib/*Debug*
