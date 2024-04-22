@@ -54,7 +54,7 @@ namespace Events
                                 wasActivated = true;
                                 if (explVis) {
                                     dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
-                                }                                
+                                }
                                 auto  dude  = dead_guy->AsReference()->PlaceObjectAtMe(settings->WerewolfEnemy, false)->AsReference();
                                 float scale = 0.001f;
                                 script->SetCommand(fmt::format(FMT_STRING("setscale {}"), scale));
@@ -69,7 +69,7 @@ namespace Events
                                         util->PlayMeme(settings->MemeSound);
                                     });
                                 }).detach();
-                                //dude->Enable(false);
+                                // dude->Enable(false);
                                 dude->DoMoveToHigh();
                                 std::jthread([=] {
                                     std::this_thread::sleep_for(1s);
@@ -89,7 +89,7 @@ namespace Events
                                 wasActivated = true;
                                 if (explVis) {
                                     dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
-                                }                                
+                                }
                                 auto  dude  = dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnEnemy, false)->AsReference();
                                 float scale = 0.001f;
                                 script->SetCommand(fmt::format(FMT_STRING("setscale {}"), scale));
@@ -103,12 +103,11 @@ namespace Events
                                         script->CompileAndRun(dude);
                                         dude->Load3D(false);
                                         util->PlayMeme(settings->MemeSound);
-                                        
                                     });
                                 }).detach();
                                 /*dude->Enable(false);*/
                                 dude->DoMoveToHigh();
-                                
+
                                 std::jthread([=] {
                                     std::this_thread::sleep_for(1s);
                                     SKSE::GetTaskInterface()->AddTask([=] { wasActivated = false; });
@@ -126,7 +125,7 @@ namespace Events
                                 auto obj_ref = event->objectActivated->AsReference();
                                 if (explVis) {
                                     event->objectActivated->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
-                                }                                
+                                }
                                 auto mimic = event->objectActivated->AsReference()->PlaceObjectAtMe(settings->DraugrEnemy, false)->AsReference();
                                 event->objectActivated->AsReference()->Disable();
                                 std::jthread([=] {
@@ -171,7 +170,7 @@ namespace Events
                                 wasActivated = true;
                                 if (explVis) {
                                     event->objectActivated->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
-                                }                                
+                                }
                                 auto mimic = event->objectActivated->AsReference()->PlaceObjectAtMe(settings->DwarvenEnemy, false)->AsReference();
                                 event->objectActivated->AsReference()->Disable();
                                 std::jthread([=] {
@@ -199,7 +198,7 @@ namespace Events
                                 auto obj_ref = event->objectActivated->AsReference();
                                 if (explVis) {
                                     event->objectActivated->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
-                                }                                
+                                }
                                 auto mimic = event->objectActivated->AsReference()->PlaceObjectAtMe(settings->ShadeEnemy, false)->AsReference();
                                 event->objectActivated->AsReference()->Disable();
                                 std::jthread([=] {
@@ -227,7 +226,7 @@ namespace Events
                                 auto obj_ref = event->objectActivated->AsReference();
                                 if (explVis) {
                                     event->objectActivated->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
-                                }                                
+                                }
                                 auto mimic = event->objectActivated->AsReference()->PlaceObjectAtMe(settings->MimicEnemy, false)->AsReference();
                                 event->objectActivated->AsReference()->Disable();
                                 std::jthread([=] {
