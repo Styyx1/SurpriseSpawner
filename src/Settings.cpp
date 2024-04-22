@@ -19,6 +19,7 @@ void Settings::LoadSettings() noexcept
     shade_container_event_active   = ini.GetBoolValue("Event Toggles", "bShadeContainerEvent");
     generic_container_event_active = ini.GetBoolValue("Event Toggles", "bGenericContainerEvents");
     urn_explosion_event_active     = ini.GetBoolValue("Event Toggles", "bUrnContainerEvents");
+    toggle_visual_explosion        = ini.GetBoolValue("Event Toggles", "bToggleExplosionVisuals");
 
     std::string fileName(ini.GetValue("General", "sModFileName", ""));
     std::string spawnEnemyID(ini.GetValue("Enemies", "CorpseSpawnFormID", ""));

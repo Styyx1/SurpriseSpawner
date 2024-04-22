@@ -60,7 +60,7 @@ public:
 
         if (player->GetCurrentLocation() != nullptr) {
             return player->GetCurrentLocation()->HasKeywordString(locKeyword);
-            logger::debug("current location is: {}", player->GetCurrentLocation()->GetName());
+            //logger::debug("current location is: {}", player->GetCurrentLocation()->GetName());
         }
         else {
             logger::debug("no location found");
@@ -74,12 +74,12 @@ public:
 
         if (player->GetCurrentLocation() != nullptr) {
             if (player->GetCurrentLocation()->HasKeywordString("LocTypePlayerHouse")) {
-                logger::debug("current location is: {}", player->GetCurrentLocation()->GetName());
+                //logger::debug("current location is: {}", player->GetCurrentLocation()->GetName());
                 return true;
             }
         }
         else {
-            logger::debug("current location is: {}", player->GetCurrentLocation()->GetName());
+            //logger::debug("current location is: {}", player->GetCurrentLocation()->GetName());
             return false;
         }
     }

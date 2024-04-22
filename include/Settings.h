@@ -44,4 +44,5 @@ public:
     inline static bool generic_container_event_active{ true };
     inline static bool urn_explosion_event_active{ true };
     inline static bool toggle_meme_sound{ false };
+    inline static bool toggle_visual_explosion{ true };
 };
