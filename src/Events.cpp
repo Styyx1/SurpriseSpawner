@@ -33,7 +33,7 @@ namespace Events
 
         auto settings = Settings::GetSingleton();
         auto util     = Utility::GetSingleton();
-        
+
         const auto scriptFactory = RE::IFormFactory::GetConcreteFormFactoryByType<RE::Script>();
         const auto script        = scriptFactory ? scriptFactory->Create() : nullptr;
 
@@ -107,7 +107,7 @@ namespace Events
                         }
                     }
                 }
-                if (isContainerEventsActive() && !isOwned) {                                      
+                if (isContainerEventsActive() && !isOwned) {
                     if (event->objectActivated->GetBaseObject()->GetFormType() == RE::FormType::Container && !isLocked) {
                         if (settings->draugr_container_event_active && nameOfCont.contains("raugr")) {
                             auto chance = util->RandomInt(settings->minNumber, settings->maxNumber);
