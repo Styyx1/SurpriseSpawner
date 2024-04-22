@@ -39,6 +39,7 @@ namespace Events
 
         bool        isLocked   = event->objectActivated->IsLocked();
         std::string nameOfCont = event->objectActivated->GetName();
+        bool        isOwned    = util->LocPlayerOwned();
 
         // Only do stuff when looking at dead actors
         if (eventPtr) {
@@ -106,7 +107,7 @@ namespace Events
                         }
                     }
                 }
-                if (isContainerEventsActive()) {
+                if (isContainerEventsActive() && !isOwned) {
                     if (event->objectActivated->GetBaseObject()->GetFormType() == RE::FormType::Container && !isLocked) {
                         if (settings->draugr_container_event_active && nameOfCont.contains("raugr")) {
                             auto chance = util->RandomInt(settings->minNumber, settings->maxNumber);
@@ -161,7 +162,8 @@ namespace Events
                                 }).detach();
                             }
                         }
-                        else if (settings->shade_container_event_active && (util->LocationCheck("LocTypeWarlockLair") || util->LocationCheck("LocTypeVampireLair"))) {
+                        else if (settings->shade_container_event_active && (util->LocationCheck("LocTypeWarlockLair") || util->LocationCheck("LocTypeVampireLair")))
+                        {
                             auto chance = util->RandomInt(settings->minNumber, settings->maxNumber);
                             if (chance == settings->compareValue) {
                                 wasActivated = true;
