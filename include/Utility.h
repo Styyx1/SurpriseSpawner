@@ -68,19 +68,19 @@ public:
         }
     }
 
-    bool LocPlayerOwned() {
+    bool LocPlayerOwned()
+    {
         auto player = RE::PlayerCharacter::GetSingleton();
-        
+
         if (player->GetCurrentLocation() != nullptr) {
             if (player->GetCurrentLocation()->HasKeywordString("LocTypePlayerHouse")) {
                 logger::debug("current location is: {}", player->GetCurrentLocation()->GetName());
                 return true;
             }
-        } 
+        }
         else {
             logger::debug("current location is: {}", player->GetCurrentLocation()->GetName());
             return false;
         }
     }
-
 };

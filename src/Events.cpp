@@ -162,8 +162,7 @@ namespace Events
                                 }).detach();
                             }
                         }
-                        else if (settings->shade_container_event_active && (util->LocationCheck("LocTypeWarlockLair") || util->LocationCheck("LocTypeVampireLair")))
-                        {
+                        else if (settings->shade_container_event_active && (util->LocationCheck("LocTypeWarlockLair") || util->LocationCheck("LocTypeVampireLair"))) {
                             auto chance = util->RandomInt(settings->minNumber, settings->maxNumber);
                             if (chance == settings->compareValue) {
                                 wasActivated = true;
