@@ -33,7 +33,7 @@ namespace Events
 
         auto settings = Settings::GetSingleton();
         auto util     = Utility::GetSingleton();
-
+        
         const auto scriptFactory = RE::IFormFactory::GetConcreteFormFactoryByType<RE::Script>();
         const auto script        = scriptFactory ? scriptFactory->Create() : nullptr;
 
@@ -107,15 +107,23 @@ namespace Events
                         }
                     }
                 }
-                if (isContainerEventsActive() && !isOwned) {
+                if (isContainerEventsActive() && !isOwned) {                                      
                     if (event->objectActivated->GetBaseObject()->GetFormType() == RE::FormType::Container && !isLocked) {
                         if (settings->draugr_container_event_active && nameOfCont.contains("raugr")) {
                             auto chance = util->RandomInt(settings->minNumber, settings->maxNumber);
                             if (chance == settings->compareValue) {
                                 wasActivated = true;
+                                auto obj_ref = event->objectActivated->AsReference();
                                 event->objectActivated->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
                                 auto mimic = event->objectActivated->AsReference()->PlaceObjectAtMe(settings->DraugrEnemy, false)->AsReference();
                                 event->objectActivated->AsReference()->Disable();
+                                std::jthread([=] {
+                                    std::this_thread::sleep_for(10s);
+                                    SKSE::GetTaskInterface()->AddTask([=] {
+                                        obj_ref->Enable(false);
+                                        logger::debug("enabled container again");
+                                    });
+                                }).detach();
                                 util->PlayMeme(settings->MemeSound);
                                 script->SetCommand(fmt::format(FMT_STRING("resetai")));
                                 script->CompileAndRun(mimic); // no idea why this is needed but it fixed my spawn being passive
@@ -147,10 +155,18 @@ namespace Events
                         else if (settings->dwarven_container_event_active && util->LocationCheck("LocTypeDwarvenAutomatons")) {
                             auto chance = util->RandomInt(settings->minNumber, settings->maxNumber);
                             if (chance == settings->compareValue) {
+                                auto obj_ref = event->objectActivated->AsReference();
                                 wasActivated = true;
                                 event->objectActivated->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
                                 auto mimic = event->objectActivated->AsReference()->PlaceObjectAtMe(settings->DwarvenEnemy, false)->AsReference();
                                 event->objectActivated->AsReference()->Disable();
+                                std::jthread([=] {
+                                    std::this_thread::sleep_for(10s);
+                                    SKSE::GetTaskInterface()->AddTask([=] {
+                                        obj_ref->Enable(false);
+                                        logger::debug("enabled container again");
+                                    });
+                                }).detach();
                                 util->PlayMeme(settings->MemeSound);
                                 script->SetCommand(fmt::format(FMT_STRING("resetai")));
                                 script->CompileAndRun(mimic); // no idea why this is needed but it fixed my spawn being passive
@@ -166,9 +182,17 @@ namespace Events
                             auto chance = util->RandomInt(settings->minNumber, settings->maxNumber);
                             if (chance == settings->compareValue) {
                                 wasActivated = true;
+                                auto obj_ref = event->objectActivated->AsReference();
                                 event->objectActivated->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
                                 auto mimic = event->objectActivated->AsReference()->PlaceObjectAtMe(settings->ShadeEnemy, false)->AsReference();
                                 event->objectActivated->AsReference()->Disable();
+                                std::jthread([=] {
+                                    std::this_thread::sleep_for(10s);
+                                    SKSE::GetTaskInterface()->AddTask([=] {
+                                        obj_ref->Enable(false);
+                                        logger::debug("enabled container again");
+                                    });
+                                }).detach();
                                 util->PlayMeme(settings->MemeSound);
                                 script->SetCommand(fmt::format(FMT_STRING("resetai")));
                                 script->CompileAndRun(mimic); // no idea why this is needed but it fixed my spawn being passive
@@ -184,9 +208,17 @@ namespace Events
                             auto chance = util->RandomInt(settings->minNumber, settings->maxNumber);
                             if (chance == settings->compareValue) {
                                 wasActivated = true;
+                                auto obj_ref = event->objectActivated->AsReference();
                                 event->objectActivated->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
                                 auto mimic = event->objectActivated->AsReference()->PlaceObjectAtMe(settings->MimicEnemy, false)->AsReference();
                                 event->objectActivated->AsReference()->Disable();
+                                std::jthread([=] {
+                                    std::this_thread::sleep_for(10s);
+                                    SKSE::GetTaskInterface()->AddTask([=] {
+                                        obj_ref->Enable(false);
+                                        logger::debug("enabled container again");
+                                    });
+                                }).detach();
                                 util->PlayMeme(settings->MemeSound);
                                 script->SetCommand(fmt::format(FMT_STRING("resetai")));
                                 script->CompileAndRun(mimic); // no idea why this is needed but it fixed my spawn being passive
