@@ -42,7 +42,6 @@ namespace Events
         bool        isOwned    = util->LocPlayerOwned();
         bool        explVis    = settings->toggle_visual_explosion;
 
-        
         if (eventPtr) {
             if (event->actionRef->IsPlayerRef()) {
                 if (settings->npc_event_active) {
@@ -69,9 +68,9 @@ namespace Events
                                         script->CompileAndRun(dude);
                                         dude->Enable(true);
                                         dude->DoMoveToHigh();
-                                        util->PlayMeme(settings->MemeSound);                                        
+                                        util->PlayMeme(settings->MemeSound);
                                     });
-                                }).detach();                                
+                                }).detach();
                                 std::jthread([=] {
                                     std::this_thread::sleep_for(1s);
                                     SKSE::GetTaskInterface()->AddTask([=] { wasActivated = false; });
@@ -108,7 +107,6 @@ namespace Events
                                         util->PlayMeme(settings->MemeSound);
                                     });
                                 }).detach();
-                                
 
                                 std::jthread([=] {
                                     std::this_thread::sleep_for(1s);
