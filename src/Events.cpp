@@ -54,7 +54,7 @@ namespace Events
                                 wasActivated = true;
                                 if (explVis) {
                                     dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
-                                }                                
+                                }
                                 std::jthread([=] {
                                     std::this_thread::sleep_for(1.5s);
                                     SKSE::GetTaskInterface()->AddTask([=] {
@@ -81,11 +81,11 @@ namespace Events
                                 wasActivated = true;
                                 if (explVis) {
                                     dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
-                                }                                
+                                }
                                 std::jthread([=] {
                                     std::this_thread::sleep_for(1.5s);
                                     SKSE::GetTaskInterface()->AddTask([=] {
-                                        auto  dude  = dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnEnemy, false)->AsReference();                                        
+                                        auto dude = dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnEnemy, false)->AsReference();
                                         dude->MoveTo(dead_guy);
                                         util->PlayMeme(settings->MemeSound);
                                     });
