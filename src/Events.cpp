@@ -42,11 +42,12 @@ namespace Events
         bool        isOwned    = util->LocPlayerOwned();
         bool        explVis    = settings->toggle_visual_explosion;
 
-        // Only do stuff when looking at dead actors
+        
         if (eventPtr) {
             if (event->actionRef->IsPlayerRef()) {
                 if (settings->npc_event_active) {
                     RE::Actor* dead_guy = event->objectActivated->As<RE::Actor>();
+                    // Only do stuff when looking at dead actors
                     if (dead_guy && dead_guy->IsDead()) {
                         if (dead_guy->IsInFaction(settings->WerewolfFaction)) {
                             auto chance = util->RandomInt(settings->minNumber, settings->maxNumber);
@@ -66,11 +67,11 @@ namespace Events
                                         float size = 1.0f;
                                         script->SetCommand(fmt::format(FMT_STRING("setscale {}"), size));
                                         script->CompileAndRun(dude);
-                                        util->PlayMeme(settings->MemeSound);
+                                        dude->Enable(true);
+                                        dude->DoMoveToHigh();
+                                        util->PlayMeme(settings->MemeSound);                                        
                                     });
-                                }).detach();
-                                // dude->Enable(false);
-                                dude->DoMoveToHigh();
+                                }).detach();                                
                                 std::jthread([=] {
                                     std::this_thread::sleep_for(1s);
                                     SKSE::GetTaskInterface()->AddTask([=] { wasActivated = false; });
@@ -102,11 +103,12 @@ namespace Events
                                         script->SetCommand(fmt::format(FMT_STRING("setscale {}"), size));
                                         script->CompileAndRun(dude);
                                         dude->Load3D(false);
+                                        dude->Enable(false);
+                                        dude->DoMoveToHigh();
                                         util->PlayMeme(settings->MemeSound);
                                     });
                                 }).detach();
-                                /*dude->Enable(false);*/
-                                dude->DoMoveToHigh();
+                                
 
                                 std::jthread([=] {
                                     std::this_thread::sleep_for(1s);
