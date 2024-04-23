@@ -54,20 +54,12 @@ namespace Events
                                 wasActivated = true;
                                 if (explVis) {
                                     dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
-                                }
-                                auto  dude  = dead_guy->AsReference()->PlaceObjectAtMe(settings->WerewolfEnemy, false)->AsReference();
-                                float scale = 0.001f;
-                                script->SetCommand(fmt::format(FMT_STRING("setscale {}"), scale));
-                                script->CompileAndRun(dude);
-                                dude->MoveTo(dead_guy);
+                                }                                
                                 std::jthread([=] {
                                     std::this_thread::sleep_for(1.5s);
                                     SKSE::GetTaskInterface()->AddTask([=] {
-                                        float size = 1.0f;
-                                        script->SetCommand(fmt::format(FMT_STRING("setscale {}"), size));
-                                        script->CompileAndRun(dude);
-                                        dude->Enable(true);
-                                        dude->DoMoveToHigh();
+                                        auto dude = dead_guy->AsReference()->PlaceObjectAtMe(settings->WerewolfEnemy, false)->AsReference();
+                                        dude->MoveTo(dead_guy);
                                         util->PlayMeme(settings->MemeSound);
                                     });
                                 }).detach();
@@ -89,25 +81,15 @@ namespace Events
                                 wasActivated = true;
                                 if (explVis) {
                                     dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
-                                }
-                                auto  dude  = dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnEnemy, false)->AsReference();
-                                float scale = 0.001f;
-                                script->SetCommand(fmt::format(FMT_STRING("setscale {}"), scale));
-                                script->CompileAndRun(dude);
-                                dude->MoveTo(dead_guy);
+                                }                                
                                 std::jthread([=] {
                                     std::this_thread::sleep_for(1.5s);
                                     SKSE::GetTaskInterface()->AddTask([=] {
-                                        float size = 1.0f;
-                                        script->SetCommand(fmt::format(FMT_STRING("setscale {}"), size));
-                                        script->CompileAndRun(dude);
-                                        dude->Load3D(false);
-                                        dude->Enable(false);
-                                        dude->DoMoveToHigh();
+                                        auto  dude  = dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnEnemy, false)->AsReference();                                        
+                                        dude->MoveTo(dead_guy);
                                         util->PlayMeme(settings->MemeSound);
                                     });
                                 }).detach();
-
                                 std::jthread([=] {
                                     std::this_thread::sleep_for(1s);
                                     SKSE::GetTaskInterface()->AddTask([=] { wasActivated = false; });
