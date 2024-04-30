@@ -110,12 +110,9 @@ public:
 
     inline static void ApplyStress(RE::Actor* target)
     {
-        auto player = RE::PlayerCharacter::GetSingleton();
+        auto player   = RE::PlayerCharacter::GetSingleton();
         auto settings = Settings::GetSingleton();
         Utility::ApplySpell(player, target, settings->StressSpell);
         logger::debug("applied {} to {}", settings->StressSpell->GetName(), target->AsReference()->GetName());
-
     }
-
-    
 };
