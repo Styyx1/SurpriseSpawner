@@ -2,10 +2,11 @@
 #include "Logging.h"
 #include "SKSE/Interfaces.h"
 #include "Settings.h"
+#include "Cache.h"
 
 void Listener(SKSE::MessagingInterface::Message* message) noexcept
 {
-    if (message->type <=> SKSE::MessagingInterface::kDataLoaded == 0) {
+    if (message->type == SKSE::MessagingInterface::kDataLoaded) {
         auto settings = Settings::GetSingleton();
         settings->LoadSettings();
         settings->LoadForms();
@@ -25,6 +26,7 @@ SKSEPluginLoad(const SKSE::LoadInterface* skse)
 
     logger::info("{} {} is loading...", plugin->GetName(), version);
     Init(skse);
+    Cache::CacheAddLibAddresses();
 
     if (const auto messaging{ SKSE::GetMessagingInterface() }; !messaging->RegisterListener(Listener))
         return false;

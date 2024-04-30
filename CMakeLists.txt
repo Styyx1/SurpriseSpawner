@@ -3,7 +3,7 @@ message("Using toolchain file ${CMAKE_TOOLCHAIN_FILE}.")
 
 project(
   SurpriseSpawner
-  VERSION 1.0.0
+  VERSION 1.5.0
   LANGUAGES CXX
 )
 
@@ -58,7 +58,7 @@ include(extern/CommonLibSSE-NG/cmake/CommonLibSSE.cmake)
 
 add_commonlibsse_plugin(
   ${PROJECT_NAME}
-  AUTHOR colinswrath
+  AUTHOR Styyx
   SOURCES ${headers} ${sources}
 )
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "Settings.h"
+#include "Cache.h"
 
 class Utility : public Singleton<Utility>
 {
@@ -43,7 +44,7 @@ public:
         auto              settings = Settings::GetSingleton();
         RE::BSSoundHandle handle;
         auto              am = RE::BSAudioManager::GetSingleton();
-        auto              p  = RE::PlayerCharacter::GetSingleton();
+        RE::PlayerCharacter* p  = Cache::GetPlayerSingleton();
         if (settings->toggle_meme_sound) {
             am->BuildSoundDataFromDescriptor(handle, sound->soundDescriptor);
             handle.SetVolume(1.5f);
@@ -56,7 +57,7 @@ public:
 
     bool LocationCheck(std::string_view locKeyword)
     {
-        auto player = RE::PlayerCharacter::GetSingleton();
+        RE::PlayerCharacter* player = Cache::GetPlayerSingleton();
 
         if (player->GetCurrentLocation() != nullptr) {
             return player->GetCurrentLocation()->HasKeywordString(locKeyword);
@@ -70,7 +71,7 @@ public:
 
     bool LocPlayerOwned()
     {
-        auto player = RE::PlayerCharacter::GetSingleton();
+        RE::PlayerCharacter* player = Cache::GetPlayerSingleton();
 
         if (player->GetCurrentLocation() != nullptr) {
             if (player->GetCurrentLocation()->HasKeywordString("LocTypePlayerHouse")) {
@@ -110,12 +111,10 @@ public:
 
     inline static void ApplyStress(RE::Actor* target)
     {
-        auto player = RE::PlayerCharacter::GetSingleton();
+        RE::PlayerCharacter* player   = Cache::GetPlayerSingleton();
         auto settings = Settings::GetSingleton();
         Utility::ApplySpell(player, target, settings->StressSpell);
         logger::debug("applied {} to {}", settings->StressSpell->GetName(), target->AsReference()->GetName());
 
     }
-
-    
 };
