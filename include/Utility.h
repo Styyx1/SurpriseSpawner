@@ -115,6 +115,5 @@ public:
         auto settings = Settings::GetSingleton();
         Utility::ApplySpell(player, target, settings->StressSpell);
         logger::debug("applied {} to {}", settings->StressSpell->GetName(), target->AsReference()->GetName());
-
     }
 };
