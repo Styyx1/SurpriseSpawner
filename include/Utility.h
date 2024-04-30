@@ -1,6 +1,6 @@
 #pragma once
-#include "Settings.h"
 #include "Cache.h"
+#include "Settings.h"
 
 class Utility : public Singleton<Utility>
 {
@@ -41,9 +41,9 @@ public:
 
     void PlayMeme(RE::BGSSoundDescriptorForm* sound)
     {
-        auto              settings = Settings::GetSingleton();
-        RE::BSSoundHandle handle;
-        auto              am = RE::BSAudioManager::GetSingleton();
+        auto                 settings = Settings::GetSingleton();
+        RE::BSSoundHandle    handle;
+        auto                 am = RE::BSAudioManager::GetSingleton();
         RE::PlayerCharacter* p  = Cache::GetPlayerSingleton();
         if (settings->toggle_meme_sound) {
             am->BuildSoundDataFromDescriptor(handle, sound->soundDescriptor);
@@ -112,7 +112,7 @@ public:
     inline static void ApplyStress(RE::Actor* target)
     {
         RE::PlayerCharacter* player   = Cache::GetPlayerSingleton();
-        auto settings = Settings::GetSingleton();
+        auto                 settings = Settings::GetSingleton();
         Utility::ApplySpell(player, target, settings->StressSpell);
         logger::debug("applied {} to {}", settings->StressSpell->GetName(), target->AsReference()->GetName());
     }

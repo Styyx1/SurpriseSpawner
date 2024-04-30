@@ -1,8 +1,8 @@
+#include "Cache.h"
 #include "Events.h"
 #include "Logging.h"
 #include "SKSE/Interfaces.h"
 #include "Settings.h"
-#include "Cache.h"
 
 void Listener(SKSE::MessagingInterface::Message* message) noexcept
 {

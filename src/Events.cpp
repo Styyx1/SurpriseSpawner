@@ -31,8 +31,8 @@ namespace Events
 
         auto event = eventPtr;
 
-        auto settings = Settings::GetSingleton();
-        auto util     = Utility::GetSingleton();
+        auto                 settings = Settings::GetSingleton();
+        auto                 util     = Utility::GetSingleton();
         RE::PlayerCharacter* player   = Cache::GetPlayerSingleton();
 
         const auto scriptFactory = RE::IFormFactory::GetConcreteFormFactoryByType<RE::Script>();
