@@ -33,6 +33,7 @@ namespace Events
 
         auto settings = Settings::GetSingleton();
         auto util     = Utility::GetSingleton();
+        auto player   = RE::PlayerCharacter::GetSingleton();
 
         const auto scriptFactory = RE::IFormFactory::GetConcreteFormFactoryByType<RE::Script>();
         const auto script        = scriptFactory ? scriptFactory->Create() : nullptr;
@@ -61,6 +62,7 @@ namespace Events
                                         auto dude = dead_guy->AsReference()->PlaceObjectAtMe(settings->WerewolfEnemy, false)->AsReference();
                                         dude->MoveTo(dead_guy);
                                         util->PlayMeme(settings->MemeSound);
+                                        util->ApplyStress(player);
                                     });
                                 }).detach();
                                 std::jthread([=] {
@@ -88,6 +90,7 @@ namespace Events
                                         auto dude = dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnEnemy, false)->AsReference();
                                         dude->MoveTo(dead_guy);
                                         util->PlayMeme(settings->MemeSound);
+                                        util->ApplyStress(player);
                                     });
                                 }).detach();
                                 std::jthread([=] {
@@ -118,6 +121,7 @@ namespace Events
                                     });
                                 }).detach();
                                 util->PlayMeme(settings->MemeSound);
+                                util->ApplyStress(player);
                                 script->SetCommand(fmt::format(FMT_STRING("resetai")));
                                 script->CompileAndRun(mimic); // no idea why this is needed but it fixed my spawn being passive
                                 util->RemoveAllItems(event->objectActivated->AsReference(), mimic);
@@ -136,6 +140,7 @@ namespace Events
                             if (chance == settings->compareValue) {
                                 wasActivated = true;
                                 event->objectActivated->AsReference()->PlaceObjectAtMe(settings->UrnExplosion, false);
+                                util->ApplyStress(player);
                                 std::jthread([=] {
                                     std::this_thread::sleep_for(1s);
                                     SKSE::GetTaskInterface()->AddTask([=] {
@@ -163,6 +168,7 @@ namespace Events
                                     });
                                 }).detach();
                                 util->PlayMeme(settings->MemeSound);
+                                util->ApplyStress(player);
                                 script->SetCommand(fmt::format(FMT_STRING("resetai")));
                                 script->CompileAndRun(mimic); // no idea why this is needed but it fixed my spawn being passive
                                 mimic->MoveTo(event->objectActivated->AsReference());
@@ -191,6 +197,7 @@ namespace Events
                                     });
                                 }).detach();
                                 util->PlayMeme(settings->MemeSound);
+                                util->ApplyStress(player);
                                 script->SetCommand(fmt::format(FMT_STRING("resetai")));
                                 script->CompileAndRun(mimic); // no idea why this is needed but it fixed my spawn being passive
                                 mimic->MoveTo(event->objectActivated->AsReference());
@@ -219,6 +226,7 @@ namespace Events
                                     });
                                 }).detach();
                                 util->PlayMeme(settings->MemeSound);
+                                util->ApplyStress(player);
                                 script->SetCommand(fmt::format(FMT_STRING("resetai")));
                                 script->CompileAndRun(mimic); // no idea why this is needed but it fixed my spawn being passive
                                 mimic->MoveTo(event->objectActivated->AsReference());

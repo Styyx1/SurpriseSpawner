@@ -20,6 +20,7 @@ public:
     RE::FormID MemeSoundFormID;
     RE::FormID WerewolfSpawnFormID;
     RE::FormID MimicSpawnFormID;
+    RE::FormID StressSpellFormID;
 
     RE::BGSExplosion* SpawnExplosion;
     RE::BGSExplosion* UrnExplosion;
@@ -30,6 +31,7 @@ public:
     RE::TESNPC*       WerewolfEnemy;
     RE::TESNPC*       MimicEnemy;
     RE::TESFaction*   WerewolfFaction;
+    RE::SpellItem*    StressSpell;
 
     RE::BGSSoundDescriptorForm* MemeSound;
 

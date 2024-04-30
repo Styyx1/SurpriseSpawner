@@ -31,9 +31,14 @@ void Settings::LoadSettings() noexcept
     std::string WerewolfEnemySpawnID(ini.GetValue("Enemies", "WerewolfSpawnEnemy", ""));
     std::string MimicSpawnID(ini.GetValue("Enemies", "MimicSpawnEnemy", ""));
     std::string memeSoundID(ini.GetValue("Fun", "MemeSoundFormID", ""));
+    std::string stressSpellID(ini.GetValue("Enemies", "StressSpellID", "0x816"));
 
     toggle_meme_sound = ini.GetBoolValue("Fun", "bMemeSound");
     debug_logging     = ini.GetBoolValue("Log", "Debug");
+
+    if (!stressSpellID.empty()) {
+        StressSpellFormID = ParseFormID(stressSpellID);
+    }
 
     if (!MimicSpawnID.empty()) {
         MimicSpawnFormID = ParseFormID(MimicSpawnID);
@@ -116,6 +121,9 @@ void Settings::LoadForms() noexcept
 
     if (MimicSpawnFormID)
         MimicEnemy = skyrim_cast<RE::TESNPC*>(dataHandler->LookupForm(MimicSpawnFormID, FileName));
+
+    if (StressSpellFormID)
+        StressSpell = skyrim_cast<RE::SpellItem*>(dataHandler->LookupForm(StressSpellFormID, FileName));
 
     // Hardcoded Loads
 
