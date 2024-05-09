@@ -5,6 +5,7 @@ class Settings : public Singleton<Settings>
 public:
     void LoadSettings() noexcept;
     void LoadForms() noexcept;
+    void LoadExceptions() noexcept;
 
     std::string   FileName;
     std::uint32_t minNumber;
@@ -32,7 +33,7 @@ public:
     RE::TESNPC*       MimicEnemy;
     RE::TESFaction*   WerewolfFaction;
     RE::SpellItem*    StressSpell;
-
+    std::chrono::duration<double> thread_delay;
     RE::BGSSoundDescriptorForm* MemeSound;
 
     static RE::FormID ParseFormID(const std::string& str);
@@ -47,4 +48,6 @@ public:
     inline static bool urn_explosion_event_active{ true };
     inline static bool toggle_meme_sound{ false };
     inline static bool toggle_visual_explosion{ true };
+    inline static bool delayed_explosion{ false };
+    inline static double delay_timer{ 2.5 };
 };

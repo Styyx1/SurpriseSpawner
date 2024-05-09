@@ -53,12 +53,20 @@ namespace Events
                             auto chance = util->RandomInt(settings->minNumber, settings->maxNumber);
                             if (chance == settings->compareValue) {
                                 wasActivated = true;
-                                if (explVis) {
-                                    dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
+                                if (!settings->delayed_explosion) {
+                                    if (explVis) {
+                                        dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
+                                    }
                                 }
+                                
                                 std::jthread([=] {
-                                    std::this_thread::sleep_for(1.5s);
+                                    std::this_thread::sleep_for(settings->thread_delay);
                                     SKSE::GetTaskInterface()->AddTask([=] {
+                                        if (settings->delayed_explosion) {
+                                            if (explVis) {
+                                                dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
+                                            }
+                                        }
                                         auto dude = dead_guy->AsReference()->PlaceObjectAtMe(settings->WerewolfEnemy, false)->AsReference();
                                         dude->MoveTo(dead_guy);
                                         util->PlayMeme(settings->MemeSound);
@@ -81,12 +89,19 @@ namespace Events
 
                             if (chance == settings->compareValue) {
                                 wasActivated = true;
-                                if (explVis) {
-                                    dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
+                                if (!settings->delayed_explosion) {
+                                    if (explVis) {
+                                        dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
+                                    }
                                 }
                                 std::jthread([=] {
                                     std::this_thread::sleep_for(1.5s);
                                     SKSE::GetTaskInterface()->AddTask([=] {
+                                        if (settings->delayed_explosion) {
+                                            if (explVis) {
+                                                dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
+                                            }
+                                        }
                                         auto dude = dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnEnemy, false)->AsReference();
                                         dude->MoveTo(dead_guy);
                                         util->PlayMeme(settings->MemeSound);
@@ -101,7 +116,7 @@ namespace Events
                         }
                     }
                 }
-                if (isContainerEventsActive() && !isOwned) {
+                if (isContainerEventsActive() && !isOwned && !util->ExceptionName(nameOfCont)) {
                     if (event->objectActivated->GetBaseObject()->GetFormType() == RE::FormType::Container && !isLocked) {
                         if (settings->draugr_container_event_active && nameOfCont.contains("raugr")) {
                             auto chance = util->RandomInt(settings->minNumber, settings->maxNumber);

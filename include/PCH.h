@@ -146,14 +146,21 @@
 #include <ShlObj_core.h>
 #include <Psapi.h>
 #include <Windows.h>
+
+
 #include <ClibUtil/rng.hpp>
+#include "SimpleIni.h"
+#include <ClibUtil/detail/XoshiroCpp.hpp>
+
+
 // clang-format on
 
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/sinks/msvc_sink.h>
 
+using namespace clib_util;
 using namespace std::literals;
-using namespace REL::literals;
+
 
 namespace logger = SKSE::log;
 

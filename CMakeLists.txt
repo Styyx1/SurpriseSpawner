@@ -1,23 +1,16 @@
-cmake_minimum_required(VERSION 3.28)
+cmake_minimum_required(VERSION 3.29)
 message("Using toolchain file ${CMAKE_TOOLCHAIN_FILE}.")
 
 project(
   SurpriseSpawner
-  VERSION 1.5.0
+  VERSION 1.6.0
   LANGUAGES CXX
 )
-
-#Enable for 1130 changes
-set(BUILD_SKYRIMAE1130 OFF)
-
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_DEBUG OFF)
 set(CMAKE_OPTIMIZE_DEPENDENCIES ON)
-set(SKSE_SUPPORT_XBYAK ON)
-
-set(ENABLE_SKYRIM_VR ON)
 
 include(GNUInstallDirs)
 
@@ -99,15 +92,11 @@ install(
   DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 
-if(CMAKE_BUILD_TYPE STREQUAL Debug)
+if (CMAKE_BUILD_TYPE STREQUAL Debug)
   set(BUILD_NAME Debug)
-else()
+else ()
   set(BUILD_NAME Release)
-endif()
-
-if(BUILD_SKYRIMAE1130)
-  set(BUILD_NAME ${BUILD_NAME}1130)
-endif()
+endif ()
 
 add_custom_command(
   TARGET ${PROJECT_NAME}
@@ -120,6 +109,8 @@ add_custom_command(
   ${CMAKE_COMMAND} -E copy $<TARGET_PDB_FILE:${PROJECT_NAME}> ${CMAKE_CURRENT_SOURCE_DIR}/contrib/Plugin${BUILD_NAME}/skse/plugins
   COMMAND
   ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/contrib/Config/${PROJECT_NAME}.ini ${CMAKE_CURRENT_SOURCE_DIR}/contrib/Plugin${BUILD_NAME}/skse/plugins
+  COMMAND
+  ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/contrib/Config/Exceptions_NOSPAWN.ini ${CMAKE_CURRENT_SOURCE_DIR}/contrib/Plugin${BUILD_NAME}/skse/plugins
 )
 
 file(GLOB_RECURSE OUTPUT_DLLS ${CMAKE_CURRENT_SOURCE_DIR}/contrib/**/*.dll)

@@ -1,6 +1,7 @@
 #include "Settings.h"
 #include "Utility.h"
 
+
 void Settings::LoadSettings() noexcept
 {
     logger::info("Loading settings");
@@ -20,6 +21,7 @@ void Settings::LoadSettings() noexcept
     generic_container_event_active = ini.GetBoolValue("Event Toggles", "bGenericContainerEvents");
     urn_explosion_event_active     = ini.GetBoolValue("Event Toggles", "bUrnContainerEvents");
     toggle_visual_explosion        = ini.GetBoolValue("Event Toggles", "bToggleExplosionVisuals");
+    delayed_explosion              = ini.GetBoolValue("General", "bDelayedExplosion");
 
     std::string fileName(ini.GetValue("General", "sModFileName", ""));
     std::string spawnEnemyID(ini.GetValue("Enemies", "CorpseSpawnFormID", ""));
@@ -33,8 +35,12 @@ void Settings::LoadSettings() noexcept
     std::string memeSoundID(ini.GetValue("Fun", "MemeSoundFormID", ""));
     std::string stressSpellID(ini.GetValue("Enemies", "StressSpellID", "0x816"));
 
+    delay_timer = ini.GetDoubleValue("General", "fDelayTimer", 2.5);
+
     toggle_meme_sound = ini.GetBoolValue("Fun", "bMemeSound");
     debug_logging     = ini.GetBoolValue("Log", "Debug");
+    
+    thread_delay = std::chrono::duration<double>(delay_timer);
 
     if (!stressSpellID.empty()) {
         StressSpellFormID = ParseFormID(stressSpellID);
@@ -81,6 +87,19 @@ void Settings::LoadSettings() noexcept
     FileName = fileName;
     logger::info("Loaded settings");
 };
+
+void Settings::LoadExceptions() noexcept
+{
+    logger::info("Loading Exceptions");
+    CSimpleIniA ini;
+    ini.SetUnicode();
+    ini.SetMultiKey();
+    ini.LoadFile(R"(.\Data\SKSE\Plugins\Exceptions_NOSPAWN.ini)");
+    Utility* util = Utility::GetSingleton();
+
+    auto& vec = util->exceptions;
+}
+
 
 RE::FormID Settings::ParseFormID(const std::string& str)
 {
@@ -133,3 +152,6 @@ void Settings::LoadForms() noexcept
     logger::info("All Forms loaded");
 
 } // Credits: Colinswrath https://github.com/colinswrath/BladeAndBlunt
+
+
+

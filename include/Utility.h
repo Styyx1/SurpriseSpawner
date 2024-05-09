@@ -1,10 +1,34 @@
 #pragma once
 #include "Cache.h"
 #include "Settings.h"
+#include <ClibUtil/rng.hpp>
 
 class Utility : public Singleton<Utility>
 {
 public:
+
+
+
+    std::vector<std::string> exceptions = {
+        "Missive Board",
+        "Alduin",
+        "Dragon"
+    };
+
+    bool ExceptionName(std::string exception_name){
+        if (std::count(exceptions.begin(), exceptions.end(), exception_name)) {
+            logger::debug("restricted name");
+            return true;
+            
+        }
+        else {
+            return false;
+        }
+    };
+
+
+
+
     // Credits: powerof3 https://github.com/powerof3/PapyrusExtenderSSE/blob/0d5d48485b444e73b641b43a99db35e7c5dcef4a/include/Papyrus/Functions/Utility.h#L10
     inline uint32_t RandomInt(uint32_t a_min, uint32_t a_max) { return clib_util::RNG().Generate<std::uint32_t>(a_min, a_max); }
 
@@ -78,6 +102,8 @@ public:
                 // logger::debug("current location is: {}", player->GetCurrentLocation()->GetName());
                 return true;
             }
+            else
+                return false;
         }
         else {
             // logger::debug("current location is: {}", player->GetCurrentLocation()->GetName());
@@ -116,4 +142,6 @@ public:
         Utility::ApplySpell(player, target, settings->StressSpell);
         logger::debug("applied {} to {}", settings->StressSpell->GetName(), target->AsReference()->GetName());
     }
+
+
 };
