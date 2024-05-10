@@ -5,10 +5,11 @@
 class Utility : public Singleton<Utility>
 {
 public:
-    std::vector<std::string> exceptions = { "Missive Board", "Alduin", "Harkon", "Chicken", "Drawer" };
+ 
+    bool ExceptionName(std::string exception_name){
+        auto settings = Settings::GetSingleton();
+        std::vector<std::string> exceptions = settings->JSONSettings["Names"];
 
-    bool ExceptionName(std::string exception_name)
-    {
         if (std::count(exceptions.begin(), exceptions.end(), exception_name)) {
             logger::debug("restricted name");
             return true;
@@ -18,16 +19,14 @@ public:
         }
     };
 
-    inline std::int32_t GetRandomChance(uint32_t a_min, uint32_t a_max)
+    inline int GetRandomChance(int a_min, int a_max)
     {
         static std::random_device       rd;
         static std::mt19937             gen(rd());
         std::uniform_int_distribution<> distrib(a_min, a_max);
+        logger::debug("random chance is {}", distrib(gen));
         return distrib(gen);
     }
-
-    // Credits: powerof3 https://github.com/powerof3/PapyrusExtenderSSE/blob/0d5d48485b444e73b641b43a99db35e7c5dcef4a/include/Papyrus/Functions/Utility.h#L10
-    // inline uint32_t RandomInt(uint32_t a_min, uint32_t a_max) { return RNG().generate<std::uint32_t>(a_min, a_max); }
 
     void RemoveAllItems(RE::TESObjectREFR* a_refToRemoveFrom, RE::TESObjectREFR* a_refToGiveItems)
     {

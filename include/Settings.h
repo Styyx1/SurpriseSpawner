@@ -1,16 +1,22 @@
 #pragma once
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
 
 class Settings : public Singleton<Settings>
 {
+    
+
 public:
     void LoadSettings() noexcept;
     void LoadForms() noexcept;
-    void LoadExceptions() noexcept;
+    void LoadExceptionJSON(const wchar_t* a_path);
+
+    json JSONSettings;
 
     std::string   FileName;
-    std::uint32_t minNumber;
-    std::uint32_t maxNumber;
-    std::uint32_t compareValue;
+    int minNumber;
+    int maxNumber;
+    int compareValue;
 
     RE::FormID SpawnFormID;
     RE::FormID SpawnExplosionFormID;

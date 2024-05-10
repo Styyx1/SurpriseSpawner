@@ -84,20 +84,19 @@ void Settings::LoadSettings() noexcept
     };
     // Load settings
     FileName = fileName;
+    LoadExceptionJSON(L"Data/SKSE/Plugins/MimicExceptions.json");
+
     logger::info("Loaded settings");
 };
 
-void Settings::LoadExceptions() noexcept
-{
-    logger::info("Loading Exceptions");
-    CSimpleIniA ini;
-    ini.SetUnicode();
-    ini.SetMultiKey();
-    ini.LoadFile(R"(.\Data\SKSE\Plugins\Exceptions_NOSPAWN.ini)");
-    Utility* util = Utility::GetSingleton();
 
-    auto& vec = util->exceptions;
+void Settings::LoadExceptionJSON(const wchar_t* a_path)
+{
+    std::ifstream i(a_path);
+    i >> JSONSettings;
+    logger::debug("Loaded Json");
 }
+
 
 RE::FormID Settings::ParseFormID(const std::string& str)
 {
