@@ -13,7 +13,6 @@ void Settings::LoadSettings() noexcept
     minNumber                      = std::stoi(ini.GetValue("General", "iMinNumberRand", ""));
     compareValue                   = std::stoi(ini.GetValue("General", "iCompareValue", ""));
     npc_event_active               = ini.GetBoolValue("Event Toggles", "bNPCEvent", "");
-    npc_event_active               = ini.GetBoolValue("Event Toggles", "bNPCEvent", "");
     draugr_container_event_active  = ini.GetBoolValue("Event Toggles", "bDraugrContainerEvent");
     dwarven_container_event_active = ini.GetBoolValue("Event Toggles", "bDwarvenContainerEvent");
     shade_container_event_active   = ini.GetBoolValue("Event Toggles", "bShadeContainerEvent");
@@ -22,17 +21,17 @@ void Settings::LoadSettings() noexcept
     toggle_visual_explosion        = ini.GetBoolValue("Event Toggles", "bToggleExplosionVisuals");
     delayed_explosion              = ini.GetBoolValue("General", "bDelayedExplosion");
 
-    std::string fileName(ini.GetValue("General", "sModFileName", ""));
-    std::string spawnEnemyID(ini.GetValue("Enemies", "CorpseSpawnFormID", ""));
-    std::string spawnExplosionID(ini.GetValue("General", "ExplosionFormID", ""));
-    std::string spawnUrnExplosionID(ini.GetValue("General", "UrnExplosionFormID", ""));
-    std::string DraugrChestSpawnID(ini.GetValue("Enemies", "DraugrChestEnemy", ""));
-    std::string DwarvenChestSpawnID(ini.GetValue("Enemies", "DwarvenChestEnemy", ""));
-    std::string ShadeChestSpawnID(ini.GetValue("Enemies", "ShadeChestEnemy", ""));
-    std::string WerewolfEnemySpawnID(ini.GetValue("Enemies", "WerewolfSpawnEnemy", ""));
-    std::string MimicSpawnID(ini.GetValue("Enemies", "MimicSpawnEnemy", ""));
-    std::string memeSoundID(ini.GetValue("Fun", "MemeSoundFormID", ""));
-    std::string stressSpellID(ini.GetValue("Enemies", "StressSpellID", "0x816"));
+    std::string fileName(ini.GetValue("Mod Name", "sModFileName", ""));
+    std::string spawnEnemyID(ini.GetValue("FormID", "CorpseSpawnFormID", ""));
+    std::string spawnExplosionID(ini.GetValue("FormID", "ExplosionFormID", ""));
+    std::string spawnUrnExplosionID(ini.GetValue("FormID", "UrnExplosionFormID", ""));
+    std::string DraugrChestSpawnID(ini.GetValue("FormID", "DraugrChestEnemy", ""));
+    std::string DwarvenChestSpawnID(ini.GetValue("FormID", "DwarvenChestEnemy", ""));
+    std::string ShadeChestSpawnID(ini.GetValue("FormID", "ShadeChestEnemy", ""));
+    std::string WerewolfEnemySpawnID(ini.GetValue("FormID", "WerewolfSpawnEnemy", ""));
+    std::string MimicSpawnID(ini.GetValue("FormID", "MimicSpawnEnemy", ""));
+    std::string memeSoundID(ini.GetValue("FormID", "MemeSoundFormID", ""));
+    std::string stressSpellID(ini.GetValue("FormID", "StressSpellID", "0x816"));
 
     delay_timer = ini.GetDoubleValue("General", "fDelayTimer", 2.5);
 

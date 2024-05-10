@@ -48,7 +48,7 @@ namespace Events
                 if (settings->npc_event_active) {
                     RE::Actor* dead_guy = event->objectActivated->As<RE::Actor>();
                     // Only do stuff when looking at dead actors
-                    if (dead_guy && dead_guy->IsDead()) {
+                    if (dead_guy && dead_guy->IsDead() && !util->ExceptionName(nameOfCont)) {
                         if (dead_guy->IsInFaction(settings->WerewolfFaction)) {
                             auto chance = util->GetRandomChance(settings->minNumber, settings->maxNumber);
                             if (chance == settings->compareValue) {
