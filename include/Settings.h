@@ -4,8 +4,6 @@ using json = nlohmann::json;
 
 class Settings : public Singleton<Settings>
 {
-    
-
 public:
     void LoadSettings() noexcept;
     void LoadForms() noexcept;
@@ -13,10 +11,10 @@ public:
 
     json JSONSettings;
 
-    std::string   FileName;
-    int minNumber;
-    int maxNumber;
-    int compareValue;
+    std::string FileName;
+    int         minNumber;
+    int         maxNumber;
+    int         compareValue;
 
     RE::FormID SpawnFormID;
     RE::FormID SpawnExplosionFormID;

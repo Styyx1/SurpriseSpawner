@@ -5,9 +5,9 @@
 class Utility : public Singleton<Utility>
 {
 public:
- 
-    bool ExceptionName(std::string exception_name){
-        auto settings = Settings::GetSingleton();
+    bool ExceptionName(std::string exception_name)
+    {
+        auto                     settings   = Settings::GetSingleton();
         std::vector<std::string> exceptions = settings->JSONSettings["Names"];
 
         if (std::count(exceptions.begin(), exceptions.end(), exception_name)) {

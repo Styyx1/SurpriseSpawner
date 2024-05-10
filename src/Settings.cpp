@@ -88,14 +88,12 @@ void Settings::LoadSettings() noexcept
     logger::info("Loaded settings");
 };
 
-
 void Settings::LoadExceptionJSON(const wchar_t* a_path)
 {
     std::ifstream i(a_path);
     i >> JSONSettings;
     logger::debug("Loaded Json");
 }
-
 
 RE::FormID Settings::ParseFormID(const std::string& str)
 {
