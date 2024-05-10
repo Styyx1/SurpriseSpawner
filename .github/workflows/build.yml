@@ -43,5 +43,5 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-            name: DynamicActivationKey
+            name: SurpriseSpawner
             path: ${{ github.workspace }}/contrib/PluginRelease
