@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.29)
+cmake_minimum_required(VERSION 3.28.1)
 message("Using toolchain file ${CMAKE_TOOLCHAIN_FILE}.")
 
 project(
@@ -58,6 +58,8 @@ add_commonlibsse_plugin(
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 find_path(SIMPLEINI_INCLUDE_DIRS "SimpleIni.h")
+find_path(CLIB_UTIL_INCLUDE_DIRS "ClibUtil/rng.hpp")
+
 
 # target_link_libraries(
 # ${PROJECT_NAME}

@@ -1,13 +1,12 @@
 {
   "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
   "name": "surprisespawner",
-  "version-semver": "1.0.0",
+  "version-semver": "1.6.0",
   "builtin-baseline": "28b1cf627c0570b3e094192df2fce31a3a2bc1d3",
   "dependencies": [
     "fmt",
     "spdlog",
     "rapidcsv",
-    "clib-util",
     "simpleini",
     "directxtk"
   ],

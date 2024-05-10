@@ -9,10 +9,7 @@ public:
 
 
 
-    std::vector<std::string> exceptions = {
-        "Missive Board",
-        "Alduin",
-        "Dragon"
+    std::vector<std::string> exceptions = { "Missive Board", "Alduin", "Harkon", "Chicken", "Drawer"
     };
 
     bool ExceptionName(std::string exception_name){
@@ -26,11 +23,17 @@ public:
         }
     };
 
-
+    inline std::int32_t GetRandomChance(uint32_t a_min, uint32_t a_max)
+    {
+        static std::random_device       rd;
+        static std::mt19937             gen(rd());
+        std::uniform_int_distribution<> distrib(a_min, a_max);
+        return distrib(gen);
+    }
 
 
     // Credits: powerof3 https://github.com/powerof3/PapyrusExtenderSSE/blob/0d5d48485b444e73b641b43a99db35e7c5dcef4a/include/Papyrus/Functions/Utility.h#L10
-    inline uint32_t RandomInt(uint32_t a_min, uint32_t a_max) { return clib_util::RNG().Generate<std::uint32_t>(a_min, a_max); }
+    //inline uint32_t RandomInt(uint32_t a_min, uint32_t a_max) { return RNG().generate<std::uint32_t>(a_min, a_max); }
 
     void RemoveAllItems(RE::TESObjectREFR* a_refToRemoveFrom, RE::TESObjectREFR* a_refToGiveItems)
     {
