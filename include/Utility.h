@@ -5,17 +5,13 @@
 class Utility : public Singleton<Utility>
 {
 public:
+    std::vector<std::string> exceptions = { "Missive Board", "Alduin", "Harkon", "Chicken", "Drawer" };
 
-
-
-    std::vector<std::string> exceptions = { "Missive Board", "Alduin", "Harkon", "Chicken", "Drawer"
-    };
-
-    bool ExceptionName(std::string exception_name){
+    bool ExceptionName(std::string exception_name)
+    {
         if (std::count(exceptions.begin(), exceptions.end(), exception_name)) {
             logger::debug("restricted name");
             return true;
-            
         }
         else {
             return false;
@@ -30,9 +26,8 @@ public:
         return distrib(gen);
     }
 
-
     // Credits: powerof3 https://github.com/powerof3/PapyrusExtenderSSE/blob/0d5d48485b444e73b641b43a99db35e7c5dcef4a/include/Papyrus/Functions/Utility.h#L10
-    //inline uint32_t RandomInt(uint32_t a_min, uint32_t a_max) { return RNG().generate<std::uint32_t>(a_min, a_max); }
+    // inline uint32_t RandomInt(uint32_t a_min, uint32_t a_max) { return RNG().generate<std::uint32_t>(a_min, a_max); }
 
     void RemoveAllItems(RE::TESObjectREFR* a_refToRemoveFrom, RE::TESObjectREFR* a_refToGiveItems)
     {
@@ -144,6 +139,4 @@ public:
         Utility::ApplySpell(player, target, settings->StressSpell);
         logger::debug("applied {} to {}", settings->StressSpell->GetName(), target->AsReference()->GetName());
     }
-
-
 };

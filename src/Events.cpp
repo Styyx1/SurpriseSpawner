@@ -58,7 +58,7 @@ namespace Events
                                         dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
                                     }
                                 }
-                                
+
                                 std::jthread([=] {
                                     std::this_thread::sleep_for(settings->thread_delay);
                                     SKSE::GetTaskInterface()->AddTask([=] {

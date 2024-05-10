@@ -23,31 +23,31 @@ public:
     RE::FormID MimicSpawnFormID;
     RE::FormID StressSpellFormID;
 
-    RE::BGSExplosion* SpawnExplosion;
-    RE::BGSExplosion* UrnExplosion;
-    RE::TESNPC*       SpawnEnemy; // had to be TESNPC* cause Actor* doesn't work
-    RE::TESNPC*       DraugrEnemy;
-    RE::TESNPC*       DwarvenEnemy;
-    RE::TESNPC*       ShadeEnemy;
-    RE::TESNPC*       WerewolfEnemy;
-    RE::TESNPC*       MimicEnemy;
-    RE::TESFaction*   WerewolfFaction;
-    RE::SpellItem*    StressSpell;
+    RE::BGSExplosion*             SpawnExplosion;
+    RE::BGSExplosion*             UrnExplosion;
+    RE::TESNPC*                   SpawnEnemy; // had to be TESNPC* cause Actor* doesn't work
+    RE::TESNPC*                   DraugrEnemy;
+    RE::TESNPC*                   DwarvenEnemy;
+    RE::TESNPC*                   ShadeEnemy;
+    RE::TESNPC*                   WerewolfEnemy;
+    RE::TESNPC*                   MimicEnemy;
+    RE::TESFaction*               WerewolfFaction;
+    RE::SpellItem*                StressSpell;
     std::chrono::duration<double> thread_delay;
-    RE::BGSSoundDescriptorForm* MemeSound;
+    RE::BGSSoundDescriptorForm*   MemeSound;
 
     static RE::FormID ParseFormID(const std::string& str);
 
     inline static bool debug_logging{};
 
-    inline static bool npc_event_active{ true };
-    inline static bool draugr_container_event_active{ true };
-    inline static bool dwarven_container_event_active{ true };
-    inline static bool shade_container_event_active{ true };
-    inline static bool generic_container_event_active{ true };
-    inline static bool urn_explosion_event_active{ true };
-    inline static bool toggle_meme_sound{ false };
-    inline static bool toggle_visual_explosion{ true };
-    inline static bool delayed_explosion{ false };
+    inline static bool   npc_event_active{ true };
+    inline static bool   draugr_container_event_active{ true };
+    inline static bool   dwarven_container_event_active{ true };
+    inline static bool   shade_container_event_active{ true };
+    inline static bool   generic_container_event_active{ true };
+    inline static bool   urn_explosion_event_active{ true };
+    inline static bool   toggle_meme_sound{ false };
+    inline static bool   toggle_visual_explosion{ true };
+    inline static bool   delayed_explosion{ false };
     inline static double delay_timer{ 2.5 };
 };

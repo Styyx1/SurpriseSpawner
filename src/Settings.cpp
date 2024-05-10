@@ -1,7 +1,6 @@
 #include "Settings.h"
 #include "Utility.h"
 
-
 void Settings::LoadSettings() noexcept
 {
     logger::info("Loading settings");
@@ -39,7 +38,7 @@ void Settings::LoadSettings() noexcept
 
     toggle_meme_sound = ini.GetBoolValue("Fun", "bMemeSound");
     debug_logging     = ini.GetBoolValue("Log", "Debug");
-    
+
     thread_delay = std::chrono::duration<double>(delay_timer);
 
     if (!stressSpellID.empty()) {
@@ -100,7 +99,6 @@ void Settings::LoadExceptions() noexcept
     auto& vec = util->exceptions;
 }
 
-
 RE::FormID Settings::ParseFormID(const std::string& str)
 {
     RE::FormID         result;
@@ -152,6 +150,3 @@ void Settings::LoadForms() noexcept
     logger::info("All Forms loaded");
 
 } // Credits: Colinswrath https://github.com/colinswrath/BladeAndBlunt
-
-
-
