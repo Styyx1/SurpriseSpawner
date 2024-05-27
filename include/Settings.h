@@ -5,9 +5,9 @@ using json = nlohmann::json;
 class Settings : public Singleton<Settings>
 {
 public:
-    void LoadSettings() noexcept;
-    void LoadForms() noexcept;
-    void LoadExceptionJSON(const wchar_t* a_path);
+    void   LoadSettings() noexcept;
+    void   LoadForms() noexcept;
+    void   LoadExceptionJSON(const wchar_t* a_path);
     double GetRandomDouble(double a_min, double a_max);
 
     json JSONSettings;
@@ -16,7 +16,6 @@ public:
     int         minNumber;
     int         maxNumber;
     int         compareValue;
-    
 
     RE::FormID SpawnFormID;
     RE::FormID SpawnExplosionFormID;

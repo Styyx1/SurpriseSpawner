@@ -40,7 +40,7 @@ public:
         else {
             settings->thread_delay = std::chrono::duration<double>(settings->delay_timer);
             return settings->thread_delay;
-        }            
+        }
     }
 
     void RemoveAllItems(RE::TESObjectREFR* a_refToRemoveFrom, RE::TESObjectREFR* a_refToGiveItems)
@@ -69,8 +69,6 @@ public:
                                                                          a_refToGiveItems);
                         logger::debug("Removed {}", list_item->GetName());
                     }
-                    
-
                 }
             }
             else

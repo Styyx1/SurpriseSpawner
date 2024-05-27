@@ -9,11 +9,9 @@ void Settings::LoadSettings() noexcept
     ini.SetUnicode();
     ini.LoadFile(R"(.\Data\SKSE\Plugins\SurpriseSpawner.ini)");
 
-    maxNumber                      = std::stoi(ini.GetValue("General", "iMaxNumberRand", ""));
-    minNumber                      = std::stoi(ini.GetValue("General", "iMinNumberRand", ""));
-    compareValue                   = std::stoi(ini.GetValue("General", "iCompareValue", ""));
-
-    
+    maxNumber    = std::stoi(ini.GetValue("General", "iMaxNumberRand", ""));
+    minNumber    = std::stoi(ini.GetValue("General", "iMinNumberRand", ""));
+    compareValue = std::stoi(ini.GetValue("General", "iCompareValue", ""));
 
     npc_event_active               = ini.GetBoolValue("Event Toggles", "bNPCEvent", "");
     draugr_container_event_active  = ini.GetBoolValue("Event Toggles", "bDraugrContainerEvent");
@@ -24,7 +22,6 @@ void Settings::LoadSettings() noexcept
     toggle_visual_explosion        = ini.GetBoolValue("Event Toggles", "bToggleExplosionVisuals");
     delayed_explosion              = ini.GetBoolValue("General", "bDelayedExplosion");
     useDelayRange                  = ini.GetBoolValue("General", "bUseDelayRange");
-    
 
     std::string fileName(ini.GetValue("Mod Name", "sModFileName", ""));
     std::string spawnEnemyID(ini.GetValue("FormID", "CorpseSpawnFormID", ""));
