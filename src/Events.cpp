@@ -35,13 +35,9 @@ namespace Events
         auto                 util     = Utility::GetSingleton();
         RE::PlayerCharacter* player   = Cache::GetPlayerSingleton();
 
-        const auto scriptFactory = RE::IFormFactory::GetConcreteFormFactoryByType<RE::Script>();
-        const auto script        = scriptFactory ? scriptFactory->Create() : nullptr;
-
         bool        isLocked   = event->objectActivated->IsLocked();
         std::string nameOfCont = event->objectActivated->GetName();
         bool        isOwned    = util->LocPlayerOwned();
-        bool        explVis    = settings->toggle_visual_explosion;
 
         if (eventPtr) {
             if (event->actionRef->IsPlayerRef()) {
@@ -53,65 +49,17 @@ namespace Events
                             auto chance = util->GetRandomChance(settings->minNumber, settings->maxNumber);
                             if (chance == settings->compareValue) {
                                 wasActivated = true;
-                                if (!settings->delayed_explosion) {
-                                    if (explVis) {
-                                        dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
-                                    }
-                                }
 
-                                std::jthread([=] {
-                                    std::this_thread::sleep_for(settings->thread_delay);
-                                    SKSE::GetTaskInterface()->AddTask([=] {
-                                        if (settings->delayed_explosion) {
-                                            if (explVis) {
-                                                dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
-                                            }
-                                        }
-                                        auto dude = dead_guy->AsReference()->PlaceObjectAtMe(settings->WerewolfEnemy, false)->AsReference();
-                                        dude->MoveTo(dead_guy);
-                                        util->PlayMeme(settings->MemeSound);
-                                        util->ApplyStress(player);
-                                    });
-                                }).detach();
-                                std::jthread([=] {
-                                    std::this_thread::sleep_for(1s);
-                                    SKSE::GetTaskInterface()->AddTask([=] { wasActivated = false; });
-                                }).detach();
+                                RE::TESObjectREFR* deadNPCref = dead_guy->AsReference();
+                                DelayedNPCSpawn(deadNPCref, settings->WerewolfEnemy, settings->SpawnExplosion, util->GetTimer());                                
                             }
                         }
                         else {
                             auto chance = util->GetRandomChance(settings->minNumber, settings->maxNumber);
-
-                            // check for a random number, so
-                            // it doesn't happen too often and
-                            // it doesn't happen on the same npc twice in a row
-                            // technically still possible but unlikely
-
                             if (chance == settings->compareValue) {
                                 wasActivated = true;
-                                if (!settings->delayed_explosion) {
-                                    if (explVis) {
-                                        dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
-                                    }
-                                }
-                                std::jthread([=] {
-                                    std::this_thread::sleep_for(1.5s);
-                                    SKSE::GetTaskInterface()->AddTask([=] {
-                                        if (settings->delayed_explosion) {
-                                            if (explVis) {
-                                                dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
-                                            }
-                                        }
-                                        auto dude = dead_guy->AsReference()->PlaceObjectAtMe(settings->SpawnEnemy, false)->AsReference();
-                                        dude->MoveTo(dead_guy);
-                                        util->PlayMeme(settings->MemeSound);
-                                        util->ApplyStress(player);
-                                    });
-                                }).detach();
-                                std::jthread([=] {
-                                    std::this_thread::sleep_for(1s);
-                                    SKSE::GetTaskInterface()->AddTask([=] { wasActivated = false; });
-                                }).detach();
+                                RE::TESObjectREFR* deadNPCref = dead_guy->AsReference();
+                                DelayedNPCSpawn(deadNPCref, settings->SpawnEnemy, settings->SpawnExplosion, util->GetTimer());                                
                             }
                         }
                     }
@@ -123,31 +71,7 @@ namespace Events
                             if (chance == settings->compareValue) {
                                 wasActivated = true;
                                 auto obj_ref = event->objectActivated->AsReference();
-                                if (explVis) {
-                                    event->objectActivated->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
-                                }
-                                auto mimic = event->objectActivated->AsReference()->PlaceObjectAtMe(settings->DraugrEnemy, false)->AsReference();
-                                event->objectActivated->AsReference()->Disable();
-                                std::jthread([=] {
-                                    std::this_thread::sleep_for(10s);
-                                    SKSE::GetTaskInterface()->AddTask([=] {
-                                        obj_ref->Enable(false);
-                                        logger::debug("enabled container again");
-                                    });
-                                }).detach();
-                                util->PlayMeme(settings->MemeSound);
-                                util->ApplyStress(player);
-                                script->SetCommand(fmt::format(FMT_STRING("resetai")));
-                                script->CompileAndRun(mimic); // no idea why this is needed but it fixed my spawn being passive
-                                util->RemoveAllItems(event->objectActivated->AsReference(), mimic);
-                                mimic->PlayAnimation("GetUpStart", "GetUpEnd");
-                                std::jthread([=] {
-                                    std::this_thread::sleep_for(1s);
-                                    SKSE::GetTaskInterface()->AddTask([=] {
-                                        wasActivated = false;
-                                        logger::debug("set activated to false");
-                                    });
-                                }).detach();
+                                DelayedContainerSpawn(obj_ref, settings->DraugrEnemy, settings->SpawnExplosion, util->GetTimer());                                
                             }
                         }
                         else if (settings->urn_explosion_event_active && nameOfCont.contains("Urn")) {
@@ -170,28 +94,7 @@ namespace Events
                             if (chance == settings->compareValue) {
                                 auto obj_ref = event->objectActivated->AsReference();
                                 wasActivated = true;
-                                if (explVis) {
-                                    event->objectActivated->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
-                                }
-                                auto mimic = event->objectActivated->AsReference()->PlaceObjectAtMe(settings->DwarvenEnemy, false)->AsReference();
-                                event->objectActivated->AsReference()->Disable();
-                                std::jthread([=] {
-                                    std::this_thread::sleep_for(10s);
-                                    SKSE::GetTaskInterface()->AddTask([=] {
-                                        obj_ref->Enable(false);
-                                        logger::debug("enabled container again");
-                                    });
-                                }).detach();
-                                util->PlayMeme(settings->MemeSound);
-                                util->ApplyStress(player);
-                                script->SetCommand(fmt::format(FMT_STRING("resetai")));
-                                script->CompileAndRun(mimic); // no idea why this is needed but it fixed my spawn being passive
-                                mimic->MoveTo(event->objectActivated->AsReference());
-                                util->RemoveAllItems(event->objectActivated->AsReference(), mimic);
-                                std::jthread([=] {
-                                    std::this_thread::sleep_for(1s);
-                                    SKSE::GetTaskInterface()->AddTask([=] { wasActivated = false; });
-                                }).detach();
+                                DelayedContainerSpawn(obj_ref, settings->DwarvenEnemy, settings->SpawnExplosion, util->GetTimer());                                
                             }
                         }
                         else if (settings->shade_container_event_active && (util->LocationCheck("LocTypeWarlockLair") || util->LocationCheck("LocTypeVampireLair"))) {
@@ -199,28 +102,8 @@ namespace Events
                             if (chance == settings->compareValue) {
                                 wasActivated = true;
                                 auto obj_ref = event->objectActivated->AsReference();
-                                if (explVis) {
-                                    event->objectActivated->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
-                                }
-                                auto mimic = event->objectActivated->AsReference()->PlaceObjectAtMe(settings->ShadeEnemy, false)->AsReference();
-                                event->objectActivated->AsReference()->Disable();
-                                std::jthread([=] {
-                                    std::this_thread::sleep_for(10s);
-                                    SKSE::GetTaskInterface()->AddTask([=] {
-                                        obj_ref->Enable(false);
-                                        logger::debug("enabled container again");
-                                    });
-                                }).detach();
-                                util->PlayMeme(settings->MemeSound);
-                                util->ApplyStress(player);
-                                script->SetCommand(fmt::format(FMT_STRING("resetai")));
-                                script->CompileAndRun(mimic); // no idea why this is needed but it fixed my spawn being passive
-                                mimic->MoveTo(event->objectActivated->AsReference());
-                                util->RemoveAllItems(event->objectActivated->AsReference(), mimic);
-                                std::jthread([=] {
-                                    std::this_thread::sleep_for(1s);
-                                    SKSE::GetTaskInterface()->AddTask([=] { wasActivated = false; });
-                                }).detach();
+                                DelayedContainerSpawn(obj_ref, settings->ShadeEnemy, settings->SpawnExplosion, util->GetTimer());
+                                
                             }
                         }
                         else if (settings->generic_container_event_active) {
@@ -228,28 +111,7 @@ namespace Events
                             if (chance == settings->compareValue) {
                                 wasActivated = true;
                                 auto obj_ref = event->objectActivated->AsReference();
-                                if (explVis) {
-                                    event->objectActivated->AsReference()->PlaceObjectAtMe(settings->SpawnExplosion, false);
-                                }
-                                auto mimic = event->objectActivated->AsReference()->PlaceObjectAtMe(settings->MimicEnemy, false)->AsReference();
-                                event->objectActivated->AsReference()->Disable();
-                                std::jthread([=] {
-                                    std::this_thread::sleep_for(10s);
-                                    SKSE::GetTaskInterface()->AddTask([=] {
-                                        obj_ref->Enable(false);
-                                        logger::debug("enabled container again");
-                                    });
-                                }).detach();
-                                util->PlayMeme(settings->MemeSound);
-                                util->ApplyStress(player);
-                                script->SetCommand(fmt::format(FMT_STRING("resetai")));
-                                script->CompileAndRun(mimic); // no idea why this is needed but it fixed my spawn being passive
-                                mimic->MoveTo(event->objectActivated->AsReference());
-                                util->RemoveAllItems(event->objectActivated->AsReference(), mimic);
-                                std::jthread([=] {
-                                    std::this_thread::sleep_for(1s);
-                                    SKSE::GetTaskInterface()->AddTask([=] { wasActivated = false; });
-                                }).detach();
+                                DelayedContainerSpawn(obj_ref, settings->MimicEnemy, settings->SpawnExplosion, util->GetTimer());                                
                             }
                         }
                         else
@@ -260,5 +122,80 @@ namespace Events
         }
 
         return RE::BSEventNotifyControl::kContinue;
+    }
+
+    void LootActivateEvent::DelayedContainerSpawn(RE::TESObjectREFR* a_eventItem, RE::TESNPC* a_enemyToSpawn, RE::TESBoundObject* a_explosion,
+                                                  std::chrono::duration<double> a_threadDelay)
+    {
+        const Settings* settings = Settings::GetSingleton();
+        bool            explVis  = settings->toggle_visual_explosion;
+        auto            util     = Utility::GetSingleton();
+        const auto           scriptFactory = RE::IFormFactory::GetConcreteFormFactoryByType<RE::Script>();
+        const auto           script        = scriptFactory ? scriptFactory->Create() : nullptr;
+        RE::PlayerCharacter* player   = Cache::GetPlayerSingleton();
+        if (!settings->delayed_explosion) {
+            if (explVis) {
+                a_eventItem->PlaceObjectAtMe(a_explosion, false);
+            }
+        }
+        std::jthread([=] {
+            std::this_thread::sleep_for(a_threadDelay);
+            SKSE::GetTaskInterface()->AddTask([=] {
+                if (settings->delayed_explosion) {
+                    if (explVis) {
+                        a_eventItem->PlaceObjectAtMe(a_explosion, false);
+                    }
+                }
+                auto mimic = a_eventItem->PlaceObjectAtMe(a_enemyToSpawn, false)->AsReference();
+                script->SetCommand(fmt::format(FMT_STRING("resetai")));
+                script->CompileAndRun(mimic); // no idea why this is needed but it fixed my spawn being passive
+                mimic->MoveTo(a_eventItem);
+                util->RemoveAllItems(a_eventItem, mimic);
+                util->PlayMeme(settings->MemeSound);
+                util->ApplyStress(player);
+                a_eventItem->Disable();                
+            });            
+        }).detach();
+        std::jthread([=] {
+            std::this_thread::sleep_for(a_threadDelay + 10s);
+            SKSE::GetTaskInterface()->AddTask([=] { a_eventItem->Enable(false); });
+        }).detach();
+        std::jthread([=] {
+            std::this_thread::sleep_for(1s);
+            SKSE::GetTaskInterface()->AddTask([=] { wasActivated = false; });
+        }).detach();
+    }
+
+    void LootActivateEvent::DelayedNPCSpawn(RE::TESObjectREFR* a_eventItem, RE::TESNPC* a_enemyToSpawn, RE::TESBoundObject* a_explosion,
+                                            std::chrono::duration<double> a_threadDelay)
+    {
+        const Settings* settings = Settings::GetSingleton();
+        bool            explVis  = settings->toggle_visual_explosion;
+        Utility*  util     = Utility::GetSingleton();
+        RE::PlayerCharacter* player   = Cache::GetPlayerSingleton();
+
+        if (!settings->delayed_explosion) {
+            if (explVis) {
+                a_eventItem->PlaceObjectAtMe(a_explosion, false);
+            }
+        }
+        std::jthread([=] {
+            std::this_thread::sleep_for(a_threadDelay);
+            SKSE::GetTaskInterface()->AddTask([=] {
+                if (settings->delayed_explosion) {
+                    if (explVis) {
+                        a_eventItem->PlaceObjectAtMe(a_explosion, false);
+                    }
+                }
+                auto dude = a_eventItem->PlaceObjectAtMe(a_enemyToSpawn, false)->AsReference();
+                dude->MoveTo(a_eventItem);
+                util->PlayMeme(settings->MemeSound);
+                util->ApplyStress(player);
+            });
+        }).detach();
+        std::jthread([=] {
+            std::this_thread::sleep_for(1s);
+            SKSE::GetTaskInterface()->AddTask([=] { wasActivated = false; });
+        }).detach();
     }
 } // namespace Events

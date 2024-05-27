@@ -12,6 +12,9 @@ void Settings::LoadSettings() noexcept
     maxNumber                      = std::stoi(ini.GetValue("General", "iMaxNumberRand", ""));
     minNumber                      = std::stoi(ini.GetValue("General", "iMinNumberRand", ""));
     compareValue                   = std::stoi(ini.GetValue("General", "iCompareValue", ""));
+
+    
+
     npc_event_active               = ini.GetBoolValue("Event Toggles", "bNPCEvent", "");
     draugr_container_event_active  = ini.GetBoolValue("Event Toggles", "bDraugrContainerEvent");
     dwarven_container_event_active = ini.GetBoolValue("Event Toggles", "bDwarvenContainerEvent");
@@ -20,6 +23,8 @@ void Settings::LoadSettings() noexcept
     urn_explosion_event_active     = ini.GetBoolValue("Event Toggles", "bUrnContainerEvents");
     toggle_visual_explosion        = ini.GetBoolValue("Event Toggles", "bToggleExplosionVisuals");
     delayed_explosion              = ini.GetBoolValue("General", "bDelayedExplosion");
+    useDelayRange                  = ini.GetBoolValue("General", "bUseDelayRange");
+    
 
     std::string fileName(ini.GetValue("Mod Name", "sModFileName", ""));
     std::string spawnEnemyID(ini.GetValue("FormID", "CorpseSpawnFormID", ""));
@@ -34,11 +39,19 @@ void Settings::LoadSettings() noexcept
     std::string stressSpellID(ini.GetValue("FormID", "StressSpellID", "0x816"));
 
     delay_timer = ini.GetDoubleValue("General", "fDelayTimer", 2.5);
+    maxTime     = ini.GetDoubleValue("General", "iMaxDelayTime", 2.5);
+    minTime     = ini.GetDoubleValue("General", "iMinDelayTime", 12.0);
 
     toggle_meme_sound = ini.GetBoolValue("Fun", "bMemeSound");
     debug_logging     = ini.GetBoolValue("Log", "Debug");
 
-    thread_delay = std::chrono::duration<double>(delay_timer);
+    if (useDelayRange) {
+        auto delay = GetRandomDouble(minTime, maxTime);
+        logger::debug("random time delay is {}", delay);
+        thread_delay = std::chrono::duration<double>(delay);
+    }
+    else
+        thread_delay = std::chrono::duration<double>(delay_timer);
 
     if (!stressSpellID.empty()) {
         StressSpellFormID = ParseFormID(stressSpellID);
@@ -87,6 +100,15 @@ void Settings::LoadSettings() noexcept
 
     logger::info("Loaded settings");
 };
+
+double Settings::GetRandomDouble(double a_min, double a_max)
+{
+    static std::random_device        rd;
+    static std::mt19937              gen(rd());
+    std::uniform_real_distribution<> distrib(a_min, a_max);
+    logger::debug("random chance is {}", distrib(gen));
+    return distrib(gen);
+}
 
 void Settings::LoadExceptionJSON(const wchar_t* a_path)
 {

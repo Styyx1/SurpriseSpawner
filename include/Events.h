@@ -43,6 +43,9 @@ namespace Events
             else
                 return false;
         }
+
+        void DelayedContainerSpawn(RE::TESObjectREFR* a_eventItem, RE::TESNPC* a_enemyToSpawn, RE::TESBoundObject* a_explosion, std::chrono::duration<double> a_threadDelay);
+        void DelayedNPCSpawn(RE::TESObjectREFR* a_eventItem, RE::TESNPC* a_enemyToSpawn, RE::TESBoundObject* a_explosion, std::chrono::duration<double> a_threadDelay);
     };
 
     class MenuEvent : public RE::BSTEventSink<RE::MenuOpenCloseEvent>

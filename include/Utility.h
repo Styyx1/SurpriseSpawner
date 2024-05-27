@@ -28,6 +28,21 @@ public:
         return distrib(gen);
     }
 
+    inline static std::chrono::duration<double> GetTimer()
+    {
+        auto settings = Settings::GetSingleton();
+        if (settings->useDelayRange) {
+            auto delay = settings->GetRandomDouble(settings->minTime, settings->maxTime);
+            logger::debug("random time delay is {}", delay);
+            settings->thread_delay = std::chrono::duration<double>(delay);
+            return settings->thread_delay;
+        }
+        else {
+            settings->thread_delay = std::chrono::duration<double>(settings->delay_timer);
+            return settings->thread_delay;
+        }            
+    }
+
     void RemoveAllItems(RE::TESObjectREFR* a_refToRemoveFrom, RE::TESObjectREFR* a_refToGiveItems)
     {
         std::list<RE::ContainerObject> badItems;
@@ -45,13 +60,17 @@ public:
         }
 
         for (auto& badItem : badItems) {
-            logger::debug("Removed {}", badItem.obj->GetName());
             if (badItem.obj->GetFormType() == RE::FormType::LeveledItem) {
                 auto lvlItem    = badItem.obj->As<RE::TESLeveledList>();
                 auto list_items = lvlItem->GetContainedForms();
                 for (auto& list_item : list_items) {
-                    a_refToRemoveFrom->GetHandle().get()->RemoveItem(list_item->As<RE::TESBoundObject>(), badItem.count, RE::ITEM_REMOVE_REASON::kRemove, nullptr,
-                                                                     a_refToGiveItems);
+                    if (a_refToRemoveFrom->GetHandle().get()->GetInventory().contains(list_item->As<RE::TESBoundObject>())) {
+                        a_refToRemoveFrom->GetHandle().get()->RemoveItem(list_item->As<RE::TESBoundObject>(), badItem.count, RE::ITEM_REMOVE_REASON::kRemove, nullptr,
+                                                                         a_refToGiveItems);
+                        logger::debug("Removed {}", list_item->GetName());
+                    }
+                    
+
                 }
             }
             else

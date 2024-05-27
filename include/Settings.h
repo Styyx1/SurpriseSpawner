@@ -8,6 +8,7 @@ public:
     void LoadSettings() noexcept;
     void LoadForms() noexcept;
     void LoadExceptionJSON(const wchar_t* a_path);
+    double GetRandomDouble(double a_min, double a_max);
 
     json JSONSettings;
 
@@ -15,6 +16,7 @@ public:
     int         minNumber;
     int         maxNumber;
     int         compareValue;
+    
 
     RE::FormID SpawnFormID;
     RE::FormID SpawnExplosionFormID;
@@ -54,4 +56,7 @@ public:
     inline static bool   toggle_visual_explosion{ true };
     inline static bool   delayed_explosion{ false };
     inline static double delay_timer{ 2.5 };
+    inline static bool   useDelayRange{ true };
+    inline static double minTime;
+    inline static double maxTime;
 };
