@@ -138,17 +138,18 @@ public:
                 logger::warn("Item at index {} was nullptr", i);
             }
         }
-
         for (auto& badItem : badItems) {
             if (badItem.obj->GetFormType() == RE::FormType::LeveledItem) {
-                auto lvlItem    = badItem.obj->As<RE::TESLeveledList>();
-                auto list_items = lvlItem->GetContainedForms();
-                for (auto& list_item : list_items) {
-                    if (a_refToRemoveFrom->GetHandle().get()->GetInventory().contains(list_item->As<RE::TESBoundObject>())) {
-                        a_refToRemoveFrom->GetHandle().get()->RemoveItem(list_item->As<RE::TESBoundObject>(), badItem.count, RE::ITEM_REMOVE_REASON::kRemove, nullptr,
-                                                                         a_refToGiveItems);
-                        logger::debug("Removed {}", list_item->GetName());
+                auto lvlItem      = badItem.obj->As<RE::TESLeveledList>();
+                auto inv_map      = a_refToRemoveFrom->GetHandle().get()->GetInventoryCounts();               
+                
+                for (auto& items : inv_map){
+                    if (items.first->GetFormType() != RE::FormType::LeveledItem) {
+                        a_refToRemoveFrom->GetHandle().get()->RemoveItem(items.first, items.second, RE::ITEM_REMOVE_REASON::kRemove, nullptr, a_refToGiveItems);
+                        logger::debug("removed {}", items.first->GetName());
                     }
+                    else
+                        return;  
                 }
             }
             else
