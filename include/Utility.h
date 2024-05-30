@@ -125,35 +125,14 @@ public:
 
     void RemoveAllItems(RE::TESObjectREFR* a_refToRemoveFrom, RE::TESObjectREFR* a_refToGiveItems)
     {
-        std::list<RE::ContainerObject> badItems;
-
-        for (uint32_t i = 0; i < a_refToRemoveFrom->GetContainer()->numContainerObjects; i++) {
-            auto item = a_refToRemoveFrom->GetContainer()->containerObjects[i];
-            if (item && item->obj) {
-                if (item->obj) {
-                    badItems.push_back(*item);
-                }
-            }
-            else {
-                logger::warn("Item at index {} was nullptr", i);
-            }
-        }
-        for (auto& badItem : badItems) {
-            if (badItem.obj->GetFormType() == RE::FormType::LeveledItem) {
-                auto lvlItem      = badItem.obj->As<RE::TESLeveledList>();
-                auto inv_map      = a_refToRemoveFrom->GetHandle().get()->GetInventoryCounts();               
-                
-                for (auto& items : inv_map){
-                    if (items.first->GetFormType() != RE::FormType::LeveledItem) {
-                        a_refToRemoveFrom->GetHandle().get()->RemoveItem(items.first, items.second, RE::ITEM_REMOVE_REASON::kRemove, nullptr, a_refToGiveItems);
-                        logger::debug("removed {}", items.first->GetName());
-                    }
-                    else
-                        return;  
-                }
+        auto inv_map = a_refToRemoveFrom->GetHandle().get()->GetInventoryCounts();
+        for (auto& items : inv_map) {
+            if (items.first->GetFormType() != RE::FormType::LeveledItem) {
+                a_refToRemoveFrom->GetHandle().get()->RemoveItem(items.first, items.second, RE::ITEM_REMOVE_REASON::kRemove, nullptr, a_refToGiveItems);
+                logger::debug("removed {}", items.first->GetName());
             }
             else
-                a_refToRemoveFrom->GetHandle().get()->RemoveItem(badItem.obj->As<RE::TESBoundObject>(), badItem.count, RE::ITEM_REMOVE_REASON::kRemove, nullptr, a_refToGiveItems);
+                return;
         }
     }
 
