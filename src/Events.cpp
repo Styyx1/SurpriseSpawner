@@ -47,7 +47,7 @@ namespace Events
                         if (dead_guy->IsInFaction(settings->WerewolfFaction)) {
                             auto chance = util->GetRandomChance(settings->minNumber, settings->maxNumber);
                             if (chance == settings->compareValue) {
-                                wasActivated = true;
+                                wasActivated                  = true;
                                 RE::TESObjectREFR* deadNPCref = dead_guy->AsReference();
                                 DelayedNPCSpawn(deadNPCref, settings->WerewolfEnemy, settings->SpawnExplosion, util->GetTimer());
                             }
@@ -62,7 +62,7 @@ namespace Events
                         }
                     }
                 }
-                if (!util->isAnyException()) {                    
+                if (!util->isAnyException()) {
                     if (isContainerEventsActive() && !util->ExceptionName(nameOfCont)) {
                         if (event->objectActivated->GetBaseObject()->GetFormType() == RE::FormType::Container && !isLocked) {
                             if (settings->draugr_container_event_active && nameOfCont.contains("raugr")) {

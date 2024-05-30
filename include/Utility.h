@@ -15,25 +15,27 @@ public:
             return true;
         }
         else {
-            
             return false;
         }
     };
 
-    // Editor IDs appear to not be loaded, even with PO3 Tweaks, I'll maybe revisit this idea at some point 
+    // Editor IDs appear to not be loaded, even with PO3 Tweaks, I'll maybe revisit this idea at some point
 
     /*bool isRestrictedContainer(std::string a_contEDID)
     {
         auto                     settings   = Settings::GetSingleton();
-        std::vector<std::string> exceptions = settings->JSONSettings["ContainerIDs"];        
+        std::vector<std::string> exceptions =
+     * settings->JSONSettings["ContainerIDs"];        
 
         if (std::count(exceptions.begin(), exceptions.end(), a_contEDID.c_str())) {
-            logger::debug("{} is a restricted container", a_contEDID);
+            logger::debug("{} is a
+     * restricted container", a_contEDID);
             return true;
         }
         else {
             logger::debug("{} is not restricted", a_contEDID);
-            return false;
+            return
+     * false;
         }
     }
 
@@ -41,8 +43,9 @@ public:
     {
         if (ExceptionName(a_name)) {
             return true;
-        }
-        if (isRestrictedContainer(a_contEDID)) {
+ }
+ if
+     * (isRestrictedContainer(a_contEDID)) {
             return true;
         }
         else {
@@ -54,8 +57,8 @@ public:
     {
         auto                     settings   = Settings::GetSingleton();
         std::vector<std::string> exceptions = settings->JSONSettings["Cells"];
-        RE::PlayerCharacter*          player     = Cache::GetPlayerSingleton();
-        auto EDID = player->GetParentCell()->GetFormEditorID();
+        RE::PlayerCharacter*     player     = Cache::GetPlayerSingleton();
+        auto                     EDID       = player->GetParentCell()->GetFormEditorID();
 
         if (std::count(exceptions.begin(), exceptions.end(), EDID)) {
             logger::debug("{} is a restricted Cell", player->GetParentCell()->GetFormEditorID());
@@ -82,8 +85,8 @@ public:
         }
     }
 
-    bool isAnyException() {
-
+    bool isAnyException()
+    {
         if (isRestrictedCell()) {
             logger::debug("restricted cell");
             return true;
@@ -95,7 +98,6 @@ public:
         else
             return false;
     }
-
 
     inline int GetRandomChance(int a_min, int a_max)
     {
@@ -169,8 +171,6 @@ public:
         else
             return;
     }
-
-    
 
     bool LocationCheck(std::string_view locKeyword)
     {
