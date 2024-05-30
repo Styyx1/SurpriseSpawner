@@ -37,11 +37,10 @@ namespace Events
 
         bool        isLocked   = event->objectActivated->IsLocked();
         std::string nameOfCont = event->objectActivated->GetName();
-        bool        isOwned    = util->LocPlayerOwned();
 
         if (eventPtr) {
             if (event->actionRef->IsPlayerRef()) {
-                if (settings->npc_event_active) {
+                if (settings->npc_event_active && !util->isAnyException()) {
                     RE::Actor* dead_guy = event->objectActivated->As<RE::Actor>();
                     // Only do stuff when looking at dead actors
                     if (dead_guy && dead_guy->IsDead() && !util->ExceptionName(nameOfCont)) {
@@ -49,7 +48,6 @@ namespace Events
                             auto chance = util->GetRandomChance(settings->minNumber, settings->maxNumber);
                             if (chance == settings->compareValue) {
                                 wasActivated = true;
-
                                 RE::TESObjectREFR* deadNPCref = dead_guy->AsReference();
                                 DelayedNPCSpawn(deadNPCref, settings->WerewolfEnemy, settings->SpawnExplosion, util->GetTimer());
                             }
@@ -64,57 +62,59 @@ namespace Events
                         }
                     }
                 }
-                if (isContainerEventsActive() && !isOwned && !util->ExceptionName(nameOfCont)) {
-                    if (event->objectActivated->GetBaseObject()->GetFormType() == RE::FormType::Container && !isLocked) {
-                        if (settings->draugr_container_event_active && nameOfCont.contains("raugr")) {
-                            auto chance = util->GetRandomChance(settings->minNumber, settings->maxNumber);
-                            if (chance == settings->compareValue) {
-                                wasActivated = true;
-                                auto obj_ref = event->objectActivated->AsReference();
-                                DelayedContainerSpawn(obj_ref, settings->DraugrEnemy, settings->SpawnExplosion, util->GetTimer());
+                if (!util->isAnyException()) {                    
+                    if (isContainerEventsActive() && !util->ExceptionName(nameOfCont)) {
+                        if (event->objectActivated->GetBaseObject()->GetFormType() == RE::FormType::Container && !isLocked) {
+                            if (settings->draugr_container_event_active && nameOfCont.contains("raugr")) {
+                                auto chance = util->GetRandomChance(settings->minNumber, settings->maxNumber);
+                                if (chance == settings->compareValue) {
+                                    wasActivated = true;
+                                    auto obj_ref = event->objectActivated->AsReference();
+                                    DelayedContainerSpawn(obj_ref, settings->DraugrEnemy, settings->SpawnExplosion, util->GetTimer());
+                                }
                             }
-                        }
-                        else if (settings->urn_explosion_event_active && nameOfCont.contains("Urn")) {
-                            auto chance = util->GetRandomChance(settings->minNumber, settings->maxNumber);
-                            if (chance == settings->compareValue) {
-                                wasActivated = true;
-                                event->objectActivated->AsReference()->PlaceObjectAtMe(settings->UrnExplosion, false);
-                                util->ApplyStress(player);
-                                std::jthread([=] {
-                                    std::this_thread::sleep_for(1s);
-                                    SKSE::GetTaskInterface()->AddTask([=] {
-                                        wasActivated = false;
-                                        logger::debug("set activated to false");
-                                    });
-                                }).detach();
+                            else if (settings->urn_explosion_event_active && nameOfCont.contains("Urn")) {
+                                auto chance = util->GetRandomChance(settings->minNumber, settings->maxNumber);
+                                if (chance == settings->compareValue) {
+                                    wasActivated = true;
+                                    event->objectActivated->AsReference()->PlaceObjectAtMe(settings->UrnExplosion, false);
+                                    util->ApplyStress(player);
+                                    std::jthread([=] {
+                                        std::this_thread::sleep_for(1s);
+                                        SKSE::GetTaskInterface()->AddTask([=] {
+                                            wasActivated = false;
+                                            logger::debug("set activated to false");
+                                        });
+                                    }).detach();
+                                }
                             }
-                        }
-                        else if (settings->dwarven_container_event_active && util->LocationCheck("LocTypeDwarvenAutomatons")) {
-                            auto chance = util->GetRandomChance(settings->minNumber, settings->maxNumber);
-                            if (chance == settings->compareValue) {
-                                auto obj_ref = event->objectActivated->AsReference();
-                                wasActivated = true;
-                                DelayedContainerSpawn(obj_ref, settings->DwarvenEnemy, settings->SpawnExplosion, util->GetTimer());
+                            else if (settings->dwarven_container_event_active && util->LocationCheck("LocTypeDwarvenAutomatons")) {
+                                auto chance = util->GetRandomChance(settings->minNumber, settings->maxNumber);
+                                if (chance == settings->compareValue) {
+                                    auto obj_ref = event->objectActivated->AsReference();
+                                    wasActivated = true;
+                                    DelayedContainerSpawn(obj_ref, settings->DwarvenEnemy, settings->SpawnExplosion, util->GetTimer());
+                                }
                             }
-                        }
-                        else if (settings->shade_container_event_active && (util->LocationCheck("LocTypeWarlockLair") || util->LocationCheck("LocTypeVampireLair"))) {
-                            auto chance = util->GetRandomChance(settings->minNumber, settings->maxNumber);
-                            if (chance == settings->compareValue) {
-                                wasActivated = true;
-                                auto obj_ref = event->objectActivated->AsReference();
-                                DelayedContainerSpawn(obj_ref, settings->ShadeEnemy, settings->SpawnExplosion, util->GetTimer());
+                            else if (settings->shade_container_event_active && (util->LocationCheck("LocTypeWarlockLair") || util->LocationCheck("LocTypeVampireLair"))) {
+                                auto chance = util->GetRandomChance(settings->minNumber, settings->maxNumber);
+                                if (chance == settings->compareValue) {
+                                    wasActivated = true;
+                                    auto obj_ref = event->objectActivated->AsReference();
+                                    DelayedContainerSpawn(obj_ref, settings->ShadeEnemy, settings->SpawnExplosion, util->GetTimer());
+                                }
                             }
-                        }
-                        else if (settings->generic_container_event_active) {
-                            auto chance = util->GetRandomChance(settings->minNumber, settings->maxNumber);
-                            if (chance == settings->compareValue) {
-                                wasActivated = true;
-                                auto obj_ref = event->objectActivated->AsReference();
-                                DelayedContainerSpawn(obj_ref, settings->MimicEnemy, settings->SpawnExplosion, util->GetTimer());
+                            else if (settings->generic_container_event_active) {
+                                auto chance = util->GetRandomChance(settings->minNumber, settings->maxNumber);
+                                if (chance == settings->compareValue) {
+                                    wasActivated = true;
+                                    auto obj_ref = event->objectActivated->AsReference();
+                                    DelayedContainerSpawn(obj_ref, settings->MimicEnemy, settings->SpawnExplosion, util->GetTimer());
+                                }
                             }
+                            else
+                                return RE::BSEventNotifyControl::kContinue;
                         }
-                        else
-                            return RE::BSEventNotifyControl::kContinue;
                     }
                 }
             }

@@ -2,7 +2,26 @@
   "Names": [
     "Missive Board",
     "Alduin",
-    "Steam Engine Cover"
+    "Steam Engine Cover",
+    "Warden's Chest"
+  ],
+  "LocationKeys": [
+    "LocTypeInn",
+    "BYOH_LocTypeHomestead",
+    "LocTypePlayerHouse",
+    "LoctypeSettlement",
+    "LocTypeTown",
+    "LocTypeCity",
+    "LocTypeJail",
+    "LocTypeFarm",
+    "LocTypeStore",
+    "LocTypeCemetery",
+    "LocTypeDwelling"
+  ],
+  "Cells": [
+    "HelgenKeep01",
+    "QASmoke",
+    "APStartCell",
+    "APHelgenInnCellar"
   ]
-
 }

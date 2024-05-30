@@ -11,13 +11,91 @@ public:
         std::vector<std::string> exceptions = settings->JSONSettings["Names"];
 
         if (std::count(exceptions.begin(), exceptions.end(), exception_name)) {
-            logger::debug("restricted name");
+            logger::debug("{} is a restricted name", exception_name);
+            return true;
+        }
+        else {
+            
+            return false;
+        }
+    };
+
+    // Editor IDs appear to not be loaded, even with PO3 Tweaks, I'll maybe revisit this idea at some point 
+
+    /*bool isRestrictedContainer(std::string a_contEDID)
+    {
+        auto                     settings   = Settings::GetSingleton();
+        std::vector<std::string> exceptions = settings->JSONSettings["ContainerIDs"];        
+
+        if (std::count(exceptions.begin(), exceptions.end(), a_contEDID.c_str())) {
+            logger::debug("{} is a restricted container", a_contEDID);
+            return true;
+        }
+        else {
+            logger::debug("{} is not restricted", a_contEDID);
+            return false;
+        }
+    }
+
+    bool isRestrictedNameOrID(std::string a_name, std::string a_contEDID)
+    {
+        if (ExceptionName(a_name)) {
+            return true;
+        }
+        if (isRestrictedContainer(a_contEDID)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }*/
+
+    bool isRestrictedCell()
+    {
+        auto                     settings   = Settings::GetSingleton();
+        std::vector<std::string> exceptions = settings->JSONSettings["Cells"];
+        RE::PlayerCharacter*          player     = Cache::GetPlayerSingleton();
+        auto EDID = player->GetParentCell()->GetFormEditorID();
+
+        if (std::count(exceptions.begin(), exceptions.end(), EDID)) {
+            logger::debug("{} is a restricted Cell", player->GetParentCell()->GetFormEditorID());
             return true;
         }
         else {
             return false;
         }
     };
+
+    bool isRestrictedLoc()
+    {
+        auto                     settings   = Settings::GetSingleton();
+        std::vector<std::string> exceptions = settings->JSONSettings["LocationKeys"];
+        RE::PlayerCharacter*     player     = Cache::GetPlayerSingleton();
+
+        if (player->GetCurrentLocation() != nullptr) {
+            logger::debug("location is {}", player->GetParentCell()->GetFormEditorID());
+            return player->GetCurrentLocation()->HasAnyKeywordByEditorID(exceptions);
+        }
+        else {
+            logger::debug("no location found");
+            return false;
+        }
+    }
+
+    bool isAnyException() {
+
+        if (isRestrictedCell()) {
+            logger::debug("restricted cell");
+            return true;
+        }
+        if (isRestrictedLoc()) {
+            logger::debug("restricted location type keyword");
+            return true;
+        }
+        else
+            return false;
+    }
+
 
     inline int GetRandomChance(int a_min, int a_max)
     {
@@ -91,6 +169,8 @@ public:
         else
             return;
     }
+
+    
 
     bool LocationCheck(std::string_view locKeyword)
     {
