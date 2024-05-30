@@ -24,18 +24,21 @@ public:
     /*bool isRestrictedContainer(std::string a_contEDID)
     {
         auto                     settings   = Settings::GetSingleton();
-        std::vector<std::string> exceptions =
+        std::vector<std::string> exceptions
+     * =
      * settings->JSONSettings["ContainerIDs"];        
 
         if (std::count(exceptions.begin(), exceptions.end(), a_contEDID.c_str())) {
-            logger::debug("{} is a
+            logger::debug("{}
+     * is a
      * restricted container", a_contEDID);
             return true;
         }
         else {
             logger::debug("{} is not restricted", a_contEDID);
-            return
-     * false;
+ return
+
+     * * false;
         }
     }
 
@@ -44,7 +47,8 @@ public:
         if (ExceptionName(a_name)) {
             return true;
  }
- if
+
+     * if
      * (isRestrictedContainer(a_contEDID)) {
             return true;
         }
